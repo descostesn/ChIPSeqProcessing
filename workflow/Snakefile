@@ -77,3 +77,36 @@ elif ((testlayoutsingle == tablelayout) | (testlayoutpaired == tablelayout)).all
 else:
     raise KeyError("All samples should be single or paired end, check your summaryFile.")
 
+
+
+###############################################################################
+# Variables definition
+###############################################################################
+
+# Splitting the table into single or paired end experiments
+
+index_single = samplesData['library_layout'] == 'SINGLE'
+index_paired = samplesData['library_layout'] == 'PAIRED'
+samplesData_single = samplesData[index_single]
+samplesData_paired = samplesData[index_paired]
+
+# Output files names
+
+SINGLESAMPLES = samplesData_single['samples'].tolist()
+PAIREDSAMPLES = samplesData_paired['samples'].tolist()
+
+
+
+
+###############################################################################
+# Rules
+###############################################################################
+
+
+rule all:
+  input:
+    expand("../results/data/sra/single/{singleEndName}", singleEndName = SINGLESAMPLES),
+    expand("../results/data/sra/paired/{pairedEndName}", pairedEndName = PAIREDSAMPLES)
+
+
+include: "rules/download.smk"
