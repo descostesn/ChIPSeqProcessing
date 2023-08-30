@@ -1,0 +1,79 @@
+################################################################################
+# This subworkflow aims at processing the ChIP-seq data. The dataset can be
+# found in ../input_table/data_mouse_multireads.csv.
+#
+# Nicolas Descostes
+################################################################################
+
+
+
+###############################################################################
+# Config Variables
+###############################################################################
+
+try:
+  input_table = config["samples"]["summaryFile"]
+except KeyError:
+  print("The parameter \"summaryFile\" in section \"samples\" has not been defined. The pipeline cannot start.")
+
+
+###############################################################################
+# CHECK EXISTENCE OF FILES
+###############################################################################
+
+if not os.path.isfile(input_table):
+        raise IOError("File \"" + input_table + "\" (defined in " + config["samples"]["summaryFile"] + ") not found.")
+
+
+
+###############################################################################
+# Functions
+###############################################################################
+
+
+def read_samplesTable(inputTable):
+    data = pandas.read_csv(inputTable)
+    # Verify column names
+    if not {'sraname', 'samples', 'run', 'link', 'organism', 'name', 'input', 'experiment_title', 'cell_line', 'rep', 'study_name', 'library_strategy', 'library_layout', 'study_title', 'read_length_max'}.issubset(data.columns.values):
+            raise KeyError("The samples file must contain the following named columns: 'sraname', 'samples', 'run', 'link', 'organism', 'name', 'input', 'experiment_title', 'cell_line', 'rep', 'study_name', 'library_strategy', 'library_layout', 'study_title', 'read_length_max'")
+    return data
+
+
+###############################################################################
+# Reading input table
+###############################################################################
+
+        
+samplesData = read_samplesTable(input_table)
+
+
+###############################################################################
+# Parameters checking
+###############################################################################
+
+# Checking organism definition
+tableorg = samplesData['organism'].unique() 
+testorg = ['Mus_musculus'] 
+if not (testorg == tableorg).all():
+    raise KeyError("All samples should belong to Mus musculus, check your summaryFile.")
+
+# Checking the library strategy
+tablestrategy = samplesData['library_strategy'].unique()
+teststrategy = ['ChIP-Seq']
+if not (teststrategy == tablestrategy).all():
+    raise KeyError("All samples should be ChIP-Seq experiments, check your summaryFile.")
+
+# Checking the library layout
+tablelayout = samplesData['library_layout'].unique()
+testlayoutsingle = ['SINGLE']
+testlayoutpaired = ['PAIRED']
+
+if (testlayoutpaired == tablelayout).all():
+    print("\n\n ## The table is only composed of paired-end experiments ##\n")
+elif (testlayoutsingle == tablelayout).all():
+    print("\n\n ## The table is only composed of single-end experiments ##\n")
+elif ((testlayoutsingle == tablelayout) | (testlayoutpaired == tablelayout)).all():
+    print("\n\n ## The table is composed of single-end and paired-end experiments ##\n")
+else:
+    raise KeyError("All samples should be single or paired end, check your summaryFile.")
+
