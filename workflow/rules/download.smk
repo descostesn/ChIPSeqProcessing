@@ -14,7 +14,8 @@ rule download_sra_single:
          "link"],
     srasingle = lambda wildcards: samples_single_df.loc[wildcards.singleEndName, 
         "sraname"]
-  threads: 1    
+  threads: 1
+  benchmark: "benchmark/download_sra_single/{singleEndName}.tsv"    
   shell:
     """
     echo "Downloading sra {params.linksingle}"
@@ -32,6 +33,7 @@ rule download_sra_paired:
     srapaired = lambda wildcards: samples_paired_df.loc[wildcards.pairedEndName, 
         "sraname"]
   threads: 1
+  benchmark: "benchmark/download_sra_paired/{pairedEndName}.tsv"
   shell:
     """
     echo "Downloading sra {params.linkpaired}"
