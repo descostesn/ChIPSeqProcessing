@@ -135,7 +135,14 @@ rule all:
     expand("../results/data/sra/single/{singleEndName}", 
         singleEndName = SINGLESAMPLES),
     expand("../results/data/sra/paired/{pairedEndName}", 
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/data/single/{singleEndName}.fastq",
+        singleEndName = SINGLESAMPLES),
+    expand("data/paired/{pairedEndName}_1.fastq",
+        pairedEndName = PAIREDSAMPLES),
+    expand("data/paired/{pairedEndName}_2.fastq",
         pairedEndName = PAIREDSAMPLES)
 
 
 include: "rules/download.smk"
+include: "rules/conversions.smk"
