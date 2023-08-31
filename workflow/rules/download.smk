@@ -15,7 +15,7 @@ rule download_sra_single:
     srasingle = lambda wildcards: samples_single_df.loc[wildcards.singleEndName, 
         "sraname"]
   threads: 1
-  benchmark: "benchmark/download_sra_single/{singleEndName}.tsv"    
+  benchmark: "benchmark/download_sra_single/{singleEndName}.tsv" 
   shell:
     """
     echo "Downloading sra {params.linksingle}"
