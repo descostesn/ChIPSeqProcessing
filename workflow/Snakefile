@@ -48,9 +48,9 @@ def read_samplesTable(inputTable):
         'library_layout', 'study_title', 
         'read_length_max'}.issubset(data.columns.values):
             raise KeyError("The samples file must contain the following \
-                named columns: 'sraname', 'samples', 'run', 'link', 'organism', 
-                'name', 'input', 'experiment_title', 'cell_line', 'rep', 
-                'study_name', 'library_strategy', 'library_layout', 
+                named columns: 'sraname', 'samples', 'run', 'link', 'organism',\
+                'name', 'input', 'experiment_title', 'cell_line', 'rep',\
+                'study_name', 'library_strategy', 'library_layout', \
                 'study_title', 'read_length_max'")
     return data
 
