@@ -1,7 +1,8 @@
 ################################################################################
 # Download sra files
 #
-#  from the csv of TEbench. The file can be found in config/data.csv
+# from the csv of TEbench. The file can be found in config/data.csv
+# WARNING: This code is made to work with TEbench
 ################################################################################
 
 
