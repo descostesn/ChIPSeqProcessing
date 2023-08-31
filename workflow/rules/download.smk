@@ -7,7 +7,7 @@
 
 rule download_sra_single:
   output:
-    singleSRA = "../results/data/sra/single/{singleEndName}")
+    singleSRA = "../results/data/sra/single/{singleEndName}"
   params:
     linksingle = lambda wildcards: samples_single_df.loc[wildcards.singleEndName, "link"],
     srasingle = lambda wildcards: samples_single_df.loc[wildcards.singleEndName, "sraname"]
