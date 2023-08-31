@@ -21,7 +21,8 @@ import os
 try:
   input_table = config["samples"]["summaryFile"]
 except KeyError:
-  print("The parameter \"summaryFile\" in section \"samples\" has not been defined. The pipeline cannot start.")
+  print("The parameter \"summaryFile\" in section \"samples\" has not been \
+    defined. The pipeline cannot start.")
 
 
 ###############################################################################
