@@ -102,6 +102,10 @@ samplesData_paired = samplesData[index_paired]
 SINGLESAMPLES = samplesData_single['samples'].tolist()
 PAIREDSAMPLES = samplesData_paired['samples'].tolist()
 
+# For Retrieving links to download sra files
+
+samples_single_df = pandas.DataFrame(samplesData_single).set_index("samples",drop=False)
+samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",drop=False)
 
 
 
