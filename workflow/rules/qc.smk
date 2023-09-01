@@ -32,3 +32,39 @@ rule fastqc_paired_file:
     fastqc -o ../results/qc/fastqc/raw_fastq/paired/ {input.fq1}
     fastqc -o ../results/qc/fastqc/raw_fastq/paired/ {input.fq2}
     """
+
+################################################################################
+# Performing fastqc after trimming according to quality.
+# WARNING: This code is made to work with TEbench
+################################################################################
+
+rule fastqc_after_trim_single:
+  input:
+    rules.trimming_single.output.trimmedFq
+  output:  
+    "../results/qc/fastqc/trimmed_fastq/single/{singleEndName}_trimmed_fastqc.html",
+    "../results/qc/fastqc/trimmed_fastq/single/{singleEndName}_trimmed_fastqc.zip"
+  threads: 1
+  conda: "envs/fastqc.yaml"
+  benchmark: "benchmark/fastqc_after_trim_single/{singleEndName}.tsv"
+  shell:
+    "fastqc -o ../results/qc/fastqc/trimmed_fastq/single/ {input}"
+    
+    
+rule fastqc_after_trim_paired:
+  input:
+    fq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
+    fq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
+  output:
+    "../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_1_val_1_fastqc.html",
+    "../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_1_val_1_fastqc.zip",
+    "../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_2_val_2_fastqc.html",
+    "../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_2_val_2_fastqc.zip"
+  threads: 1
+  conda: "envs/fastqc.yaml"
+  benchmark: "benchmark/fastqc_after_trim_paired/{pairedEndName}.tsv"
+  shell:
+    """
+    fastqc -o ../results/qc/fastqc/trimmed_fastq/paired/ {input.fq1}
+    fastqc -o ../results/qc/fastqc/trimmed_fastq/paired/ {input.fq2}
+    """

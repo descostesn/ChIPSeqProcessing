@@ -171,6 +171,18 @@ rule all:
     expand("../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz",
         pairedEndName = PAIREDSAMPLES),
     expand("../results/data/paired/trimmed/{pairedEndName}_2.fastq.gz_trimming_report.txt",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/single/{singleEndName}_trimmed_fastqc.html",
+        singleEndName = SINGLESAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/single/{singleEndName}_trimmed_fastqc.zip",
+        singleEndName = SINGLESAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_1_val_1_fastqc.html",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_1_val_1_fastqc.zip",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_2_val_2_fastqc.html",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/trimmed_fastq/paired/{pairedEndName}_2_val_2_fastqc.zip",
         pairedEndName = PAIREDSAMPLES)
 
 
