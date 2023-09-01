@@ -142,13 +142,26 @@ rule all:
     #    pairedEndName = PAIREDSAMPLES),
     #expand("data/paired/{pairedEndName}_2.fastq",
     #    pairedEndName = PAIREDSAMPLES),
-    expand("../results/data/single/{singleEndName}.fastq.gz",
+    #expand("../results/data/single/{singleEndName}.fastq.gz",
+    #    singleEndName = SINGLESAMPLES),
+    #expand("../results/data/paired/{pairedEndName}_1.fastq.gz",
+    #    pairedEndName = PAIREDSAMPLES),
+    #expand("../results/data/paired/{pairedEndName}_2.fastq.gz",
+    #    pairedEndName = PAIREDSAMPLES)
+    expand("../results/qc/fastqc/raw_fastq/single/{singleEndName}_fastqc.html",
         singleEndName = SINGLESAMPLES),
-    expand("../results/data/paired/{pairedEndName}_1.fastq.gz",
+    expand("../results/qc/fastqc/raw_fastq/single/{singleEndName}_fastqc.zip",
+        singleEndName = SINGLESAMPLES),
+    expand("../results/qc/fastqc/raw_fastq/paired/{pairedEndName}_1_fastqc.html",
         pairedEndName = PAIREDSAMPLES),
-    expand("../results/data/paired/{pairedEndName}_2.fastq.gz",
-        pairedEndName = PAIREDSAMPLES)    
+    expand("../results/qc/fastqc/raw_fastq/paired/{pairedEndName}_1_fastqc.zip",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/raw_fastq/paired/{pairedEndName}_2_fastqc.html",
+        pairedEndName = PAIREDSAMPLES),
+    expand("../results/qc/fastqc/raw_fastq/paired/{pairedEndName}_2_fastqc.zip",
+        pairedEndName = PAIREDSAMPLES)
 
 
 include: "rules/download.smk"
 include: "rules/conversions.smk"
+include: "rules/qc.smk"
