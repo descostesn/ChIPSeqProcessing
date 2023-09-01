@@ -28,8 +28,8 @@ rule fasterq_dump_paired:
   input:
     rules.download_sra_paired.output.pairedSRA
   output:
-    pairedFastq_1 = "data/paired/{pairedEndName}_1.fastq",
-    pairedFastq_2 = "data/paired/{pairedEndName}_2.fastq"
+    pairedFastq_1 = "../results/data/paired/{pairedEndName}_1.fastq",
+    pairedFastq_2 = "../results/data/paired/{pairedEndName}_2.fastq"
   threads: 20
   conda: "envs/parallelfastqdump.yaml"
   benchmark: "benchmark/fasterq_dump_paired/{pairedEndName}.tsv"
@@ -46,3 +46,42 @@ rule fasterq_dump_paired:
     cd ../../..
     sleep 10s
     """
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+rule gzip_fastq_single:
+  input:
+    rules.fasterq_dump_single.output.singleFastq
+  output:
+    singleFastq = "../results/data/single/{singleEndName}.fastq.gz"
+  threads: 1    
+  shell:
+    """
+    echo "Compressing files"
+    gzip -c {input} > {output.singleFastq}
+    """
+
+rule gzip_fastq_paired1:
+  input:
+    pairedFastq_1 = "../results/data/paired/{pairedEndName}_1.fastq"
+  output:
+    pairedFastq_1 = temp("data/paired/{pairedEndName}_1.fastq.gz")
+  threads: 1
+  shell:
+    """
+    echo "Compressing files"
+    gzip -c {input.pairedFastq_1} > {output.pairedFastq_1}
+    """
+    
+rule gzip_fastq_paired2:
+  input:
+    pairedFastq_2 = "data/paired/{pairedEndName}_2.fastq"
+  output:
+    pairedFastq_2 = temp("data/paired/{pairedEndName}_2.fastq.gz")
+  threads: 1
+  shell:
+    """
+    echo "Compressing files" 
+    gzip -c {input.pairedFastq_2} > {output.pairedFastq_2}
+    """
+    
