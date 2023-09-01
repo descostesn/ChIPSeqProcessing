@@ -132,16 +132,22 @@ samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",
 
 rule all:
   input:
-    expand("../results/data/sra/single/{singleEndName}", 
+    #expand("../results/data/sra/single/{singleEndName}", 
+    #    singleEndName = SINGLESAMPLES),
+    #expand("../results/data/sra/paired/{pairedEndName}", 
+    #    pairedEndName = PAIREDSAMPLES),
+    #expand("../results/data/single/{singleEndName}.fastq",
+    #    singleEndName = SINGLESAMPLES),
+    #expand("data/paired/{pairedEndName}_1.fastq",
+    #    pairedEndName = PAIREDSAMPLES),
+    #expand("data/paired/{pairedEndName}_2.fastq",
+    #    pairedEndName = PAIREDSAMPLES),
+    expand("../results/data/single/{singleEndName}.fastq.gz",
         singleEndName = SINGLESAMPLES),
-    expand("../results/data/sra/paired/{pairedEndName}", 
+    expand("../results/data/paired/{pairedEndName}_1.fastq.gz",
         pairedEndName = PAIREDSAMPLES),
-    expand("../results/data/single/{singleEndName}.fastq",
-        singleEndName = SINGLESAMPLES),
-    expand("data/paired/{pairedEndName}_1.fastq",
-        pairedEndName = PAIREDSAMPLES),
-    expand("data/paired/{pairedEndName}_2.fastq",
-        pairedEndName = PAIREDSAMPLES)
+    expand("../results/data/paired/{pairedEndName}_2.fastq.gz",
+        pairedEndName = PAIREDSAMPLES)    
 
 
 include: "rules/download.smk"
