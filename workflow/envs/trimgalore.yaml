@@ -1,0 +1,4 @@
+channels:
+  - bioconda/noarch
+dependencies:
+  - trim-galore=0.6.10=hdfd78af_0
