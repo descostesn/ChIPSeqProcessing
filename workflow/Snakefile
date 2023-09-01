@@ -153,6 +153,18 @@ rule all:
         genome = GENOMEID, prefix = PREFIXFASTAGTF, version = VERSION),
     expand("../results/data/gff/{genome}/{prefix}.{version}.chr.gff3",
         genome = GENOMEID, prefix = PREFIXFASTAGTF, version = VERSION),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.1.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.2.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.3.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.4.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.rev.1.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/bowtie2_index/{genome}/{prefix}.rev.2.bt2",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
     #expand("../results/data/sra/single/{singleEndName}", 
     #    singleEndName = SINGLESAMPLES),
     #expand("../results/data/sra/paired/{pairedEndName}", 
@@ -208,6 +220,7 @@ rule all:
 
 
 include: "rules/download.smk"
+include: "rules/bowtie2.smk"
 include: "rules/conversions.smk"
 include: "rules/trimming.smk"
 include: "rules/qc.smk"

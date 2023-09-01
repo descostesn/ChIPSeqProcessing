@@ -1,0 +1,4 @@
+channels:
+  - bioconda/linux-64
+dependencies:
+  - bowtie2=2.5.1=py39h6fed5c7_2
