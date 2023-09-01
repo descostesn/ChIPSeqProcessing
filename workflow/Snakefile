@@ -54,12 +54,22 @@ def read_samplesTable(inputTable):
                 'study_title', 'read_length_max'")
     return data
 
+def genome_files():
+    link_chr1=config["genome"]["fastaChr1Link"]
+    all_links = []
+    all_chr = list(range(1,20)) + list('X') + list('Y')
+    
+    for chr in all_chr:
+        all_links.append(link_chr1.replace("chromosome.1", "chromosome." + str(chr), 1))
+    
+    return all_links
+
 
 ###############################################################################
 # Reading input table
 ###############################################################################
 
-        
+
 samplesData = read_samplesTable(input_table)
 
 
@@ -123,7 +133,12 @@ samples_single_df = pandas.DataFrame(samplesData_single).set_index("samples",
 samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",
     drop=False)
 
-
+# Information regarding the genome
+GENOMEID=config["genome"]["ID"]
+GENOMELINKS=genome_files()
+PREFIXFASTAGTF=config["genome"]["prefix"]
+NAMEGTF=config["genome"]["gtfName"]
+NAMEGFF=config["genome"]["gffName"]
 
 ###############################################################################
 # Rules
@@ -132,6 +147,12 @@ samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",
 
 rule all:
   input:
+    expand("../results/data/fasta/{genome}/{prefix}.dna.chromosome.fa",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF),
+    expand("../results/data/gtf/{genome}/{namegtf}", genome = GENOMEID,
+        namegtf = NAMEGTF),
+    expand("../results/data/gff/{genome}/{namegff}", genome = GENOMEID,
+        namegff = NAMEGFF),
     #expand("../results/data/sra/single/{singleEndName}", 
     #    singleEndName = SINGLESAMPLES),
     #expand("../results/data/sra/paired/{pairedEndName}", 
