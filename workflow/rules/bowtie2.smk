@@ -14,7 +14,7 @@ rule build_bowtie_index:
     "../results/data/bowtie2_index/{genome}/{prefix}.rev.1.bt2",
     "../results/data/bowtie2_index/{genome}/{prefix}.rev.2.bt2"
   threads: 8
-  conda: "envs/bowtie2.yaml"
+  conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/build_bowtie_index/{genome}.{prefix}.tsv"
   params:
     outputFolder="../results/data/bowtie2_index"
