@@ -47,14 +47,13 @@ rule fasterq_dump_paired:
     sleep 10s
     """
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 rule gzip_fastq_single:
   input:
     rules.fasterq_dump_single.output.singleFastq
   output:
     singleFastq = "../results/data/single/{singleEndName}.fastq.gz"
-  threads: 1    
+  threads: 1
+  benchmark: "benchmark/gzip_fastq_single/{singleEndName}.tsv"
   shell:
     """
     echo "Compressing files"
@@ -65,8 +64,9 @@ rule gzip_fastq_paired1:
   input:
     pairedFastq_1 = "../results/data/paired/{pairedEndName}_1.fastq"
   output:
-    pairedFastq_1 = temp("data/paired/{pairedEndName}_1.fastq.gz")
+    pairedFastq_1 = "../results/data/paired/{pairedEndName}_1.fastq.gz"
   threads: 1
+  benchmark: "benchmark/gzip_fastq_paired1/{pairedEndName}.tsv"
   shell:
     """
     echo "Compressing files"
@@ -75,10 +75,11 @@ rule gzip_fastq_paired1:
     
 rule gzip_fastq_paired2:
   input:
-    pairedFastq_2 = "data/paired/{pairedEndName}_2.fastq"
+    pairedFastq_2 = "../results/data/paired/{pairedEndName}_2.fastq"
   output:
-    pairedFastq_2 = temp("data/paired/{pairedEndName}_2.fastq.gz")
+    pairedFastq_2 = "../results/data/paired/{pairedEndName}_2.fastq.gz"
   threads: 1
+  benchmark: "benchmark/gzip_fastq_paired2/{pairedEndName}.tsv"
   shell:
     """
     echo "Compressing files" 
