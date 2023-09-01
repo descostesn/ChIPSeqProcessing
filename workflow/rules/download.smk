@@ -49,19 +49,13 @@ rule download_sra_paired:
 # WARNING: This code is made to work with TEbench
 ################################################################################
 
-rule download_genome_files:
+rule download_genome_fasta:
   output:
     "../results/data/fasta/{genome}/{prefix}.dna.chromosome.fa",
-    "../results/data/gtf/{genome}/{namegtf}",
-    "../results/data/gff/{genome}/{namegff}"
   threads: 1
-  benchmark: "benchmark/download_genome_files/{genome}.tsv"
+  benchmark: "benchmark/download_genome_fasta/{genome}/{prefix}.tsv"
   params:
-    genomeLinks = lambda wildcards: GENOMELINKS,
-    pathGTF = lambda wildcards: config["genome"]["gtfLink"],
-    nameGTF = lambda wildcards: NAMEGTF,
-    pathGFF = lambda wildcards: config["genome"]["gffLink"],
-    nameGFF = lambda wildcards: NAMEGFF
+    genomeLinks = lambda wildcards: GENOMELINKS
   shell:
     """
     echo "Downloading {wildcards.genome} fasta"
@@ -75,30 +69,44 @@ rule download_genome_files:
     rm {wildcards.prefix}.dna.chromosome.*.fa.gz
     mv final-{wildcards.prefix} {wildcards.prefix}.dna.chromosome.fa.gz
     gunzip {wildcards.prefix}.dna.chromosome.fa.gz
-    
+
+    echo "Organizing files to destination folders"
+    mkdir -p ../results/data/fasta/{wildcards.genome}
+    mv {wildcards.prefix}.dna.chromosome.fa ../results/data/fasta/{wildcards.genome}
+    """
+
+rule download_genome_annotations:
+  output:
+    "../results/data/gtf/{genome}/{prefix}.{version}.chr.gtf",
+    "../results/data/gff/{genome}/{prefix}.{version}.chr.gff3"
+  threads: 1
+  benchmark: "benchmark/download_genome_annotations/{genome}/{prefix}.{version}.tsv"
+  params:
+    pathGTF = lambda wildcards: config["genome"]["gtfLink"],
+    pathGFF = lambda wildcards: config["genome"]["gffLink"]
+  shell:
+    """
     echo "Downloading GTF"
     wget {params.pathGTF}
     
     echo "Filtering MT from GTF"
-    gunzip {params.nameGTF}.gz
-    grep -v MT {params.nameGTF} > tmp-{wildcards.prefix}
-    rm {params.nameGTF}
-    mv tmp-{wildcards.prefix} {params.nameGTF}
+    gunzip {wildcards.prefix}.{wildcards.version}.chr.gtf.gz
+    grep -v MT {wildcards.prefix}.{wildcards.version}.chr.gtf > tmp-{wildcards.prefix}
+    rm {wildcards.prefix}.{wildcards.version}.chr.gtf
+    mv tmp-{wildcards.prefix} {wildcards.prefix}.{wildcards.version}.chr.gtf
     
     echo "Downloading GFF"
     wget {params.pathGFF}
     
     echo "Filtering MT from GFF"
-    gunzip {params.nameGFF}.gz
-    grep -v MT {params.nameGTF} > tmp
-    rm {params.nameGTF}
-    mv tmp {params.nameGTF}
+    gunzip {wildcards.prefix}.{wildcards.version}.chr.gff3.gz
+    grep -v MT {wildcards.prefix}.{wildcards.version}.chr.gff3 > tmp
+    rm {wildcards.prefix}.{wildcards.version}.chr.gff3
+    mv tmp {wildcards.prefix}.{wildcards.version}.chr.gff3
     
     echo "Organizing files to destination folders"
-    mkdir -p ../results/data/fasta/{wildcards.genome}
     mkdir -p ../results/data/gtf/{wildcards.genome}
     mkdir -p ../results/data/gff/{wildcards.genome}
-    mv {wildcards.prefix}.dna.chromosome.fa ../results/data/fasta/{wildcards.genome}
-    mv {params.nameGTF} ../results/data/gtf/{wildcards.genome}
-    mv {params.nameGFF} ../results/data/gff/{wildcards.genome}
+    mv {wildcards.prefix}.{wildcards.version}.chr.gtf ../results/data/gtf/{wildcards.genome}
+    mv {wildcards.prefix}.{wildcards.version}.chr.gff3 ../results/data/gff/{wildcards.genome}
     """

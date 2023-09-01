@@ -137,8 +137,8 @@ samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",
 GENOMEID=config["genome"]["ID"]
 GENOMELINKS=genome_files()
 PREFIXFASTAGTF=config["genome"]["prefix"]
-NAMEGTF=config["genome"]["gtfName"]
-NAMEGFF=config["genome"]["gffName"]
+VERSION=config["genome"]["version"]
+
 
 ###############################################################################
 # Rules
@@ -149,10 +149,10 @@ rule all:
   input:
     expand("../results/data/fasta/{genome}/{prefix}.dna.chromosome.fa",
         genome = GENOMEID, prefix = PREFIXFASTAGTF),
-    expand("../results/data/gtf/{genome}/{namegtf}", genome = GENOMEID,
-        namegtf = NAMEGTF),
-    expand("../results/data/gff/{genome}/{namegff}", genome = GENOMEID,
-        namegff = NAMEGFF),
+    expand("../results/data/gtf/{genome}/{prefix}.{version}.chr.gtf",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF, version = VERSION),
+    expand("../results/data/gff/{genome}/{prefix}.{version}.chr.gff3",
+        genome = GENOMEID, prefix = PREFIXFASTAGTF, version = VERSION),
     #expand("../results/data/sra/single/{singleEndName}", 
     #    singleEndName = SINGLESAMPLES),
     #expand("../results/data/sra/paired/{pairedEndName}", 
