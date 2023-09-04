@@ -35,17 +35,18 @@ rule build_bowtie_index:
 ################################################################################
 
 
-#rule bowtie2_best_single:
-#  input:
-#    rules.trimming_single.output.trimmedFq
-#  output:
-#    sam = "../results/bam/single/bowtie2_results/{singleEndName}_trimmed_best.sam",
-#    log = "../results/bam/single/bowtie2_results/{singleEndName}_trimmed_best.log"
-#  threads: 20
-#  params:
-#  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#    indexPath = "../data/genome/ucsc/mm10chrfiltered"
-#  shell:
-#    """
-#    bowtie2 -q -p {threads} -x {params.indexPath} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
-#    """
+rule bowtie2_best_single:
+  input:
+    rules.trimming_single.output.trimmedFq
+  output:
+    sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.sam",
+    log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log"
+  threads: 20
+  conda: "../envs/bowtie2.yaml"
+  benchmark: "benchmark/bowtie2/best/{genome}/{singleEndName}.tsv"
+  params:
+    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+  shell:
+    """
+    bowtie2 -q -p {threads} -x {params.indexPath} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
+    """
