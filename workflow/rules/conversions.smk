@@ -9,7 +9,7 @@ rule fasterq_dump_single:
   output:
     singleFastq = "../results/data/single/{singleEndName}.fastq"
   threads: 20
-  conda: "../../envs/parallelfastqdump.yaml"
+  conda: "../envs/parallelfastqdump.yaml"
   benchmark: "benchmark/fasterq_dump_single/{singleEndName}.tsv"
   shell:
     """
