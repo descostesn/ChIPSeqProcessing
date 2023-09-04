@@ -43,12 +43,12 @@ rule bowtie2_best_single:
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
-  benchmark: "benchmark/bowtie2/best/{genome}/{singleEndName}_best.tsv"
+  benchmark: "benchmark/bowtie2/single/best/{genome}/{singleEndName}_best.tsv"
   params:
     indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
   shell:
     """
-    bowtie2 -q -p {threads} -x {params.indexPath} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
+    bowtie2 -q -p {threads} -x {params.indexPath} -U {input} -S {output.sam} 2> {output.log}
     """
 
 rule bowtie2_MR_single:
@@ -59,13 +59,13 @@ rule bowtie2_MR_single:
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
-  benchmark: "benchmark/bowtie2/thresholdK/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
+  benchmark: "benchmark/bowtie2/single/thresholdK/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
   params:
     indexPath = "../results/data/bowtie2_index/{wildcards.genome}",
     multiThreshold = "{wildcards.multi}"
   shell:
     """
-    bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
+    bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} -U {input} -S {output.sam} 2> {output.log}
     """
 
 rule bowtie2_all_single:
@@ -76,10 +76,27 @@ rule bowtie2_all_single:
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
-  benchmark: "benchmark/bowtie2/all/{genome}/{singleEndName}_trimmed_all.tsv"
+  benchmark: "benchmark/bowtie2/single/all/{genome}/{singleEndName}_trimmed_all.tsv"
   params:
     indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
   shell:
     """
-    bowtie2 -q -p {threads} -x {params.indexPath} -a -U {input.trimmedFq} -S {output.sam} 2> {output.log}
+    bowtie2 -q -p {threads} -x {params.indexPath} -a -U {input} -S {output.sam} 2> {output.log}
+    """
+
+rule bowtie2_best_paired:
+  input:
+    trimmedFq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
+    trimmedFq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
+  output:
+    sam = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.sam",
+    log = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log"
+  threads: 20
+  conda: "../envs/bowtie2.yaml"
+  benchmark: "benchmark/bowtie2/paired/best/{genome}/{pairedEndName}_trimmed_best.tsv"
+  params:
+    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+  shell:
+    """
+    bowtie2 -q -p {threads} -x {params.indexPath} --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
     """

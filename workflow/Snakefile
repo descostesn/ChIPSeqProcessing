@@ -232,7 +232,11 @@ rule all:
     expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.sam",
         genome = GENOMEID, singleEndName = SINGLESAMPLES),
     expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.log",
-        genome = GENOMEID, singleEndName = SINGLESAMPLES)
+        genome = GENOMEID, singleEndName = SINGLESAMPLES),
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.sam",
+        genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log",
+        genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
 
 
 
