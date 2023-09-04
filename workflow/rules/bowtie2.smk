@@ -61,8 +61,8 @@ rule bowtie2_MR_single:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/single/thresholdK/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}",
-    multiThreshold = "{wildcards.multi}"
+    indexPath = "../results/data/bowtie2_index/{genome}",
+    multiThreshold = "{multi}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} -U {input} -S {output.sam} 2> {output.log}
@@ -78,7 +78,7 @@ rule bowtie2_all_single:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/single/all/{genome}/{singleEndName}_trimmed_all.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+    indexPath = "../results/data/bowtie2_index/{genome}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -a -U {input} -S {output.sam} 2> {output.log}
@@ -95,7 +95,7 @@ rule bowtie2_best_paired:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/paired/best/{genome}/{pairedEndName}_trimmed_best.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+    indexPath = "../results/data/bowtie2_index/{genome}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
@@ -112,8 +112,8 @@ rule bowtie2_MR_paired:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/paired/thresholdK/{genome}/{pairedEndName}_trimmed_k{multi}.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}",
-    multiThreshold = "{wildcards.multi}"
+    indexPath = "../results/data/bowtie2_index/{genome}",
+    multiThreshold = "{multi}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
@@ -130,7 +130,7 @@ rule bowtie2_all_paired:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/paired/all/{genome}/{pairedEndName}_trimmed_all.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+    indexPath = "../results/data/bowtie2_index/{genome}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -a --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
