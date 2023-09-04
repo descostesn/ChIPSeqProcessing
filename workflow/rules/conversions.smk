@@ -31,7 +31,7 @@ rule fasterq_dump_paired:
     pairedFastq_1 = "../results/data/paired/{pairedEndName}_1.fastq",
     pairedFastq_2 = "../results/data/paired/{pairedEndName}_2.fastq"
   threads: 20
-  conda: "../../envs/parallelfastqdump.yaml"
+  conda: "../envs/parallelfastqdump.yaml"
   benchmark: "benchmark/fasterq_dump_paired/{pairedEndName}.tsv"
   shell:
     """
