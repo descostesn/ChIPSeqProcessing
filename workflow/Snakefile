@@ -237,7 +237,7 @@ rule all:
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log",
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.sam"),
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.sam",
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log",
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
