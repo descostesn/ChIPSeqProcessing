@@ -45,7 +45,7 @@ rule bowtie2_best_single:
   conda: "../envs/bowtie2.yaml"
   benchmark: "benchmark/bowtie2/single/best/{genome}/{singleEndName}_best.tsv"
   params:
-    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+    indexPath = "../results/data/bowtie2_index/{genome}"
   shell:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -U {input} -S {output.sam} 2> {output.log}
