@@ -50,3 +50,20 @@ rule bowtie2_best_single:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
     """
+
+rule bowtie2_MR_single:
+  input:
+    rules.trimming_single.output.trimmedFq
+  output:
+    sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.sam",
+    log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log"
+  threads: 20
+  conda: "../envs/bowtie2.yaml"
+  benchmark: "benchmark/bowtie2/thresholdK/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
+  params:
+    indexPath = "../results/data/bowtie2_index/{wildcards.genome}",
+    multiThreshold = "{wildcards.multi}"
+  shell:
+    """
+    bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} -U {input.trimmedFq} -S {output.sam} 2> {output.log}
+    """
