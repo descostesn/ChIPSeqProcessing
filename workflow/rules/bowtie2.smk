@@ -118,3 +118,20 @@ rule bowtie2_MR_paired:
     """
     bowtie2 -q -p {threads} -x {params.indexPath} -k {params.multiThreshold} --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
     """
+
+rule bowtie2_all_paired:
+  input:
+    trimmedFq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
+    trimmedFq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
+  output:
+    sam = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.sam",
+    log = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.log"
+  threads: 24
+  conda: "../envs/bowtie2.yaml"
+  benchmark: "benchmark/bowtie2/paired/all/{genome}/{pairedEndName}_trimmed_all.tsv"
+  params:
+    indexPath = "../results/data/bowtie2_index/{wildcards.genome}"
+  shell:
+    """
+    bowtie2 -q -p {threads} -x {params.indexPath} -a --no-mixed --no-discordant --dovetail -1 {input.trimmedFq1} -2 {input.trimmedFq2} -S {output.sam} 2> {output.log}
+    """
