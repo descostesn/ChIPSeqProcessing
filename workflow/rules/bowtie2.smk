@@ -37,7 +37,7 @@ rule build_bowtie_index:
 
 rule bowtie2_best_single:
   input:
-    rules.trimming_single.output
+    rules.trimming_single.output.trimmedFq
   output:
     sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.sam",
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log"
@@ -53,7 +53,7 @@ rule bowtie2_best_single:
 
 rule bowtie2_MR_single:
   input:
-    rules.trimming_single.output
+    rules.trimming_single.output.trimmedFq
   output:
     sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.sam",
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log"
@@ -70,7 +70,7 @@ rule bowtie2_MR_single:
 
 rule bowtie2_all_single:
   input:
-    rules.trimming_single.output
+    rules.trimming_single.output.trimmedFq
   output:
     sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.sam",
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.log"
