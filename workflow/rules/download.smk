@@ -8,7 +8,7 @@
 
 rule download_sra_single:
   output:
-    singleSRA = "../results/data/sra/single/{singleEndName}"
+    singleSRA = temp("../results/data/sra/single/{singleEndName}")
   params:
     linksingle = lambda wildcards: samples_single_df.loc[wildcards.singleEndName,
          "link"],
@@ -26,7 +26,7 @@ rule download_sra_single:
 
 rule download_sra_paired:
   output:
-    pairedSRA = "../results/data/sra/paired/{pairedEndName}"
+    pairedSRA = temp("../results/data/sra/paired/{pairedEndName}")
   params:
     linkpaired = lambda wildcards: samples_paired_df.loc[wildcards.pairedEndName, 
         "link"],
