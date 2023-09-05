@@ -3,5 +3,5 @@ channels:
   - bioconda/linux-64
 dependencies:
   - libdeflate=1.13=h166bdaf_0 
-  - htslib=1.16=h6bc39ce_0
+  - htslib=1.17=h81da01d_2
   - samtools=1.17=hd87286a_1
