@@ -1,0 +1,7 @@
+channels:
+  - conda-forge/linux-64
+  - bioconda/linux-64
+dependencies:
+  - libdeflate=1.13=h166bdaf_0 
+  - htslib=1.16=h6bc39ce_0
+  - samtools=1.17=hd87286a_1
