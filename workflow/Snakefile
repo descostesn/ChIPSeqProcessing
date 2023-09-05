@@ -250,7 +250,8 @@ rule all:
 
 
 include: "rules/download.smk"
-include: "rules/conversions.smk"
+include: "rules/sra2fastq.smk"
 include: "rules/trimming.smk"
 include: "rules/qc.smk"
 include: "rules/bowtie2.smk"
+include: "rules/sam2bam.smk"
