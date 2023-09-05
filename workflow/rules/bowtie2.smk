@@ -39,7 +39,7 @@ rule bowtie2_best_single:
   input:
     rules.trimming_single.output.trimmedFq
   output:
-    sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.sam",
+    sam = temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.sam"),
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
@@ -55,7 +55,7 @@ rule bowtie2_MR_single:
   input:
     rules.trimming_single.output.trimmedFq
   output:
-    sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.sam",
+    sam = temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.sam"),
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
@@ -72,7 +72,7 @@ rule bowtie2_all_single:
   input:
     rules.trimming_single.output.trimmedFq
   output:
-    sam = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.sam",
+    sam = temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.sam"),
     log = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
@@ -89,7 +89,7 @@ rule bowtie2_best_paired:
     trimmedFq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
     trimmedFq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
   output:
-    sam = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.sam",
+    sam = temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.sam"),
     log = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log"
   threads: 20
   conda: "../envs/bowtie2.yaml"
@@ -106,7 +106,7 @@ rule bowtie2_MR_paired:
     trimmedFq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
     trimmedFq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
   output:
-    sam = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.sam",
+    sam = temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.sam"),
     log = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log"
   threads: 24
   conda: "../envs/bowtie2.yaml"
@@ -124,7 +124,7 @@ rule bowtie2_all_paired:
     trimmedFq1 = "../results/data/paired/trimmed/{pairedEndName}_1_val_1.fq.gz",
     trimmedFq2 = "../results/data/paired/trimmed/{pairedEndName}_2_val_2.fq.gz"
   output:
-    sam = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.sam",
+    sam = temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.sam"),
     log = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.log"
   threads: 24
   conda: "../envs/bowtie2.yaml"
