@@ -249,14 +249,14 @@ rule all:
         genome = GENOMEID, singleEndName = SINGLESAMPLES),
     expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.bam",
         genome = GENOMEID, singleEndName = SINGLESAMPLES, multi = MULTITHRESHOLD),
-    #expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam",
-    #    genome = GENOMEID, singleEndName = SINGLESAMPLES),
+    expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam",
+        genome = GENOMEID, singleEndName = SINGLESAMPLES),
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam",
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.bam",
         genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
-    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
-    #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
+        genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
 
 
 include: "rules/download.smk"
