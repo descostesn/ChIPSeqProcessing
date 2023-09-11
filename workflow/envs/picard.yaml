@@ -1,0 +1,4 @@
+channels:
+  - bioconda/noarch
+depends:
+  - picard=3.1.0=hdfd78af_0
