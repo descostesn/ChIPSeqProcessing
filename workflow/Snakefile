@@ -275,9 +275,13 @@ rule all:
     #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
     #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam",
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam.bai",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam",
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam.bai",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
@@ -288,3 +292,4 @@ include: "rules/qc.smk"
 include: "rules/bowtie2.smk"
 include: "rules/sam2bam.smk"
 include: "rules/sort.smk"
+include: "rules/index_bowtie2.smk"
