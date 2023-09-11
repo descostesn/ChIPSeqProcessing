@@ -8,7 +8,7 @@ rule sam2bam_best_single:
   input:
     rules.bowtie2_best_single.output.sam
   output:
-    "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam",
+    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam"),
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_best.tsv"
@@ -21,7 +21,7 @@ rule sam2bam_MR_single:
   input:
     rules.bowtie2_MR_single.output.sam
   output:
-    "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.bam"
+    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.bam")
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
@@ -34,7 +34,7 @@ rule sam2bam_all_single:
   input:
     rules.bowtie2_all_single.output.sam
   output:
-    "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam"
+    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam")
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_all.tsv"
@@ -47,7 +47,7 @@ rule sam2bam_best_paired:
   input:
     rules.bowtie2_best_paired.output.sam
   output:
-    "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam"
+    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam")
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_best.tsv"
@@ -60,7 +60,7 @@ rule sam2bam_MR_paired:
   input:
     rules.bowtie2_MR_paired.output.sam
   output:
-    "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.bam"
+    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.bam")
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_k{multi}.tsv"
@@ -73,7 +73,7 @@ rule sam2bam_all_paired:
   input:
     rules.bowtie2_all_paired.output.sam
   output:
-    "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam"
+    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam")
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_all.tsv"
