@@ -64,6 +64,13 @@ def genome_files():
     
     return all_links
 
+def create_k_names(samples, multithreshold):
+    result = []
+    for samplename in samples:
+        for k in multithreshold:
+            result.append(samplename + "_trimmed_k" + k)
+    return result
+
 
 ###############################################################################
 # Reading input table
@@ -142,6 +149,17 @@ VERSION=config["genome"]["version"]
 # Information for alignment with Bowtie2
 MULTITHRESHOLD=["10", "50", "100", "150"]
 
+#  Define files names for BAM format grouping the best, k and all names
+
+single_trimmed_best = [samplename + "_trimmed_best" for samplename in SINGLESAMPLES]
+single_trimmed_k = create_k_names(SINGLESAMPLES, MULTITHRESHOLD)
+single_trimmed_all = [samplename + "_trimmed_all" for samplename in SINGLESAMPLES]
+SINGLEBESTMULTIALL = single_trimmed_best + single_trimmed_k + single_trimmed_all
+
+paired_trimmed_best = [samplename + "_trimmed_best" for samplename in PAIREDSAMPLES]
+paired_trimmed_k = create_k_names(PAIREDSAMPLES, MULTITHRESHOLD)
+paired_trimmed_all =  [samplename + "_trimmed_all" for samplename in PAIREDSAMPLES]
+PAIREDBESTMULTIALL = paired_trimmed_best + paired_trimmed_k + paired_trimmed_all
 
 
 ###############################################################################
@@ -245,18 +263,22 @@ rule all:
     #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.log",
     #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam",
-        genome = GENOMEID, singleEndName = SINGLESAMPLES),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.bam",
-        genome = GENOMEID, singleEndName = SINGLESAMPLES, multi = MULTITHRESHOLD),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam",
-        genome = GENOMEID, singleEndName = SINGLESAMPLES),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam",
-        genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.bam",
-        genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
-        genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam",
+    #    genome = GENOMEID, singleEndName = SINGLESAMPLES),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.bam",
+    #    genome = GENOMEID, singleEndName = SINGLESAMPLES, multi = MULTITHRESHOLD),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam",
+    #    genome = GENOMEID, singleEndName = SINGLESAMPLES),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam",
+    #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.bam",
+    #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi = MULTITHRESHOLD),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
+    #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
+    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam",
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
 include: "rules/download.smk"
@@ -265,3 +287,4 @@ include: "rules/trimming.smk"
 include: "rules/qc.smk"
 include: "rules/bowtie2.smk"
 include: "rules/sam2bam.smk"
+include: "rules/sort.smk"
