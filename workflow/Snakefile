@@ -291,13 +291,13 @@ rule all:
         pairedEndName = PAIREDSAMPLES),
     expand("results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
         pairedEndName = PAIREDSAMPLES),
-    export("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
+    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    export("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.txt",
+    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.txt",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    export("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
-    export("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
