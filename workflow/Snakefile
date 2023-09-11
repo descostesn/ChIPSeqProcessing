@@ -279,10 +279,10 @@ rule all:
     #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam",
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam.bai",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam.bai",
-        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam.bai",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam.bai",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
     expand("../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.png",
         singleEndName = SINGLESAMPLES),
     expand("../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.txt",
@@ -299,5 +299,5 @@ include: "rules/qc.smk"
 include: "rules/bowtie2.smk"
 include: "rules/sam2bam.smk"
 include: "rules/sort.smk"
-include: "rules/index_bowtie2.smk"
+#include: "rules/index_bowtie2.smk"
 include: "rules/saturation.smk"
