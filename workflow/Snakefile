@@ -290,7 +290,17 @@ rule all:
     expand("../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.png",
         pairedEndName = PAIREDSAMPLES),
     expand("results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
-        pairedEndName = PAIREDSAMPLES)
+        pairedEndName = PAIREDSAMPLES),
+    export("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    export("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.txt",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    export("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    export("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
+
+
 
 include: "rules/download.smk"
 include: "rules/sra2fastq.smk"
@@ -301,3 +311,4 @@ include: "rules/sam2bam.smk"
 include: "rules/sort.smk"
 #include: "rules/index_bowtie2.smk"
 include: "rules/saturation.smk"
+include: "rules/duplicates.smk"
