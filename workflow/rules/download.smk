@@ -1,7 +1,5 @@
 ################################################################################
-# Download sra files
-#
-# from the csv of TEbench. The file can be found in config/data.csv
+# Download sra files from the csv of TEbench. The file can be found in config/data.csv
 # WARNING: This code is made to work with TEbench
 ################################################################################
 
@@ -44,7 +42,6 @@ rule download_sra_paired:
 
 ################################################################################
 # Download genome related files
-#
 # The links to the files are in the configuration file in ../config/config.yaml
 # WARNING: This code is made to work with TEbench
 ################################################################################

@@ -1,6 +1,5 @@
 ################################################################################
 # Converting sam files obtained with Bowtie2 to Bam and sorting.
-#
 # WARNING: This code is made to work with TEbench
 ################################################################################
 

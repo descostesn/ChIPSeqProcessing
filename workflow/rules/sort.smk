@@ -1,3 +1,8 @@
+################################################################################
+# Sorting the bam files obtained with bowtie2 before indexing them
+# WARNING: This code is made to work with TEbench
+################################################################################
+
 rule sort_bowtie_single:
   input:
     "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}.bam"
