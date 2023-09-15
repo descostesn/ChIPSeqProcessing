@@ -10,10 +10,10 @@ rule bigwig_single:
     baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
     sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt"
   output:
-    "../results/bigwig/single/{genome}/{singlebestmulti}.bw"
+    "../results/bigwig/single/{genome}/{singlebestmultiall}.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
-  benchmark: "benchmark/bigwig_single/{genome}/{singlebestmulti}.tsv"
+  benchmark: "benchmark/bigwig_single/{genome}/{singlebestmultiall}.tsv"
   shell:
     """
     SIZE=`cat {input.sizeFile}`
@@ -39,7 +39,7 @@ rule bigwig_norm_single:
     baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
     sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt"
   output:
-    "../results/bigwig/single/{genome}/{singlebestmulti}_norm.bw"
+    "../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
   benchmark: "benchmark/bigwig_norm_single/{genome}/{singlebestmultiall}.tsv"
