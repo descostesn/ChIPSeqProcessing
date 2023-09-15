@@ -299,20 +299,20 @@ rule all:
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai",
-        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
-    expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    #expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     expand("../results/bigwig/single/{genome}/{singlebestmultiall}.bw",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw",
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
-    #expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
-    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    #expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw",
-    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
 include: "rules/download.smk"
