@@ -299,11 +299,12 @@ rule all:
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai",
-        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
-
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL)
 
 
 include: "rules/download.smk"
@@ -317,3 +318,4 @@ include: "rules/sort.smk"
 include: "rules/saturation.smk"
 include: "rules/duplicates.smk"
 include: "rules/index_bigwig.smk"
+include: "rules/fragmentsize.smk"
