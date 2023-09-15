@@ -306,9 +306,9 @@ rule all:
     expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     expand("../results/bigwig/single/{genome}/{singlebestmultiall}.bw",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL)
-    #expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw",
-    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw",
+        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
     #expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
     #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     #expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw",
