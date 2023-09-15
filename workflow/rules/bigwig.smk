@@ -17,7 +17,7 @@ rule bigwig_single:
   shell:
     """
     SIZE=`cat {input.sizeFile}`
-    bamCoverage --bam {input.bamFile} --outFileName {output.bigwig} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads $SIZE
+    bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads $SIZE
     """
 
 rule bigwig_paired:
@@ -30,7 +30,7 @@ rule bigwig_paired:
   conda: "../envs/deeptools.yaml"
   benchmark: "benchmark/bigwig_paired/{genome}/{pairedbestmultiall}.tsv"
   shell:
-    "bamCoverage --bam {input.bamFile} --outFileName {output.bigwig} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads"
+    "bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads"
 
 
 rule bigwig_norm_single:
@@ -46,7 +46,7 @@ rule bigwig_norm_single:
   shell:
     """
     SIZE=`cat {input.sizeFile}`
-    bamCoverage --bam {input.bamFile} --outFileName {output.bigwig} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads $SIZE --normalizeUsing RPGC --ignoreForNormalization chrX
+    bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads $SIZE --normalizeUsing RPGC --ignoreForNormalization chrX
     """
 
 rule bigwig_norm_paired:
@@ -59,5 +59,5 @@ rule bigwig_norm_paired:
   conda: "../envs/deeptools.yaml"
   benchmark: "benchmark/bigwig_norm_paired/{genome}/{pairedbestmultiall}.tsv"
   shell:
-    "bamCoverage --bam {input.bamFile} --outFileName {output.bigwig} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads --normalizeUsing RPGC --ignoreForNormalization chrX"
+    "bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads --normalizeUsing RPGC --ignoreForNormalization chrX"
     
