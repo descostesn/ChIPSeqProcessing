@@ -23,7 +23,7 @@ rule bigwig_single:
 rule bigwig_paired:
   input:
     bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
-    baiFile = "../results/bam/single/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_nodups.bam.bai"
+    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_nodups.bam.bai"
   output:
     "../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw"
   threads: 1
@@ -52,7 +52,7 @@ rule bigwig_norm_single:
 rule bigwig_norm_paired:
   input:
     bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
-    baiFile = "../results/bam/single/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_nodups.bam.bai"
+    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_nodups.bam.bai"
   output:
     "../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw"
   threads: 1
