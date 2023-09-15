@@ -291,13 +291,17 @@ rule all:
         pairedEndName = PAIREDSAMPLES),
     expand("results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
         pairedEndName = PAIREDSAMPLES),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.txt",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
+    #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
+    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.txt",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
-        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
-    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.txt",
+    expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
@@ -312,3 +316,4 @@ include: "rules/sort.smk"
 #include: "rules/index_bowtie2.smk"
 include: "rules/saturation.smk"
 include: "rules/duplicates.smk"
+include: "rules/index_bigwig.smk"
