@@ -1,0 +1,28 @@
+################################################################################
+# Performing indexing of the sorted and duplicate removed bam files to 
+# generate the bigwig files.
+# WARNING: This code is made to work with TEbench
+################################################################################
+
+rule index_bam_bigwig_single:
+  input:
+    rules.remove_duplicates_bowtie_single.output.bamFile
+  output:
+    "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai"
+  threads: 1
+  conda: "../envs/samtools.yaml"
+  benchmark: "benchmark/index_bam_bigwig_single/{genome}/{singlebestmultiall}.tsv"
+  shell:
+    "samtools index {input}"
+
+
+rule index_bam_bigwig_paired:
+  input:
+    rules.remove_duplicates_bowtie_paired.output.bamFile
+  output:
+    "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai"
+  threads: 1
+  conda: "../envs/samtools.yaml"
+  benchmark: "benchmark/index_bam_bigwig_paired/{genome}/{pairedbestmultiall}.tsv"
+  shell:
+    "samtools index {input}"    
