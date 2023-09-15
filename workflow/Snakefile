@@ -308,11 +308,11 @@ rule all:
     expand("../results/bigwig/single/{genome}/{singlebestmultiall}.bw",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw",
-        genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
-    expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
-        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
-    expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
+    #expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
+    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    #expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw",
+    #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL)
 
 
 include: "rules/download.smk"
