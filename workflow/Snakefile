@@ -304,9 +304,9 @@ rule all:
     expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai",
         genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
     expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt",
+        genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
+    expand("../results/bigwig/single/{genome}/{singlebestmultiall}.bw",
         genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL)
-    #expand("../results/bigwig/single/{genome}/{singlebestmultiall}.bw",
-    #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
     #expand("../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw",
     #    genome = GENOMEID, pairedbestmultiall = PAIREDBESTMULTIALL),
     #expand("../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw",
@@ -327,4 +327,4 @@ include: "rules/saturation.smk"
 include: "rules/duplicates.smk"
 include: "rules/index_bigwig.smk"
 include: "rules/fragmentsize.smk"
-#include: "rules/bigwig.smk"
+include: "rules/bigwig.smk"
