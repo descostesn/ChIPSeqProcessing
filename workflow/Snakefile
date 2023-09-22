@@ -147,7 +147,7 @@ PREFIXFASTAGTF=config["genome"]["prefix"]
 VERSION=config["genome"]["version"]
 
 # Information for alignment with Bowtie2
-MULTITHRESHOLD=["10", "50", "100", "150"]
+MULTITHRESHOLD=["10", "50", "100", "150", "200", "250", "300", "350", "400"]
 
 #  Define files names for BAM format grouping the best, k and all names
 
