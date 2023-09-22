@@ -18,7 +18,7 @@ rule saturation_plot_bowtie_single:
   params:
     type = "single"
   script:
-    "../scripts/R/saturation_plot.R" 
+    "../scripts/saturation_plot.R" 
 
 
 rule saturation_plot_bowtie_paired:
@@ -35,4 +35,4 @@ rule saturation_plot_bowtie_paired:
   params:
     type = "paired"
   script:
-    "../scripts/R/saturation_plot.R" 
+    "../scripts/saturation_plot.R" 
