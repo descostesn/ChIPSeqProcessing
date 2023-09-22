@@ -1,4 +1,4 @@
 channels:
   - bioconda/noarch
-depends:
-  - deeptools=3.5.3=pyhdfd78af_0
+dependencies:
+  - deeptools=3.5.1=py_0
