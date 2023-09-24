@@ -14,5 +14,5 @@ rule retrieve_elongationSize_single:
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
   benchmark: "benchmark/retrieve_elongationSize_single/{genome}/{singlebestmultiall}.tsv"
-  shell:
-    "Rscript ../scripts/elongationSingleEnd.R"
+  script:
+    "../scripts/elongationSingleEnd.R"
