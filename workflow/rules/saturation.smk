@@ -28,7 +28,7 @@ rule saturation_plot_bowtie_paired:
     logVecAll = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
   output:
     pngPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.png",
-    reportPaired = "results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt"
+    reportPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
   benchmark: "benchmark/saturation_plot_bowtie_paired/{pairedEndName}.tsv"

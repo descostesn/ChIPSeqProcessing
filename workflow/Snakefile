@@ -289,7 +289,7 @@ rule all:
         singleEndName = SINGLESAMPLES),
     expand("../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.png",
         pairedEndName = PAIREDSAMPLES),
-    expand("results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
+    expand("../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
         pairedEndName = PAIREDSAMPLES),
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
     #    genome = GENOMEID, singlebestmultiall = SINGLEBESTMULTIALL),
