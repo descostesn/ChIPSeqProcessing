@@ -11,7 +11,7 @@ library(csaw)
 #############
 
 
-bamfile <- snakemake@input$bamfile
+bamfile <- snakemake@input$bamFile
 save(bamfile, file="/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_retrieve_elongationSize_single/bamfile.Rdat")
 stop("saving for testing")
 load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_retrieve_elongationSize_single/bamfile.Rdat")
