@@ -13,6 +13,8 @@ library(csaw)
 
 bamfile <- snakemake@input$bamFile
 outputfile <- snakemake@output
+outputfile <- outputfile[[1]]
+
 
 #############
 ## MAIN
