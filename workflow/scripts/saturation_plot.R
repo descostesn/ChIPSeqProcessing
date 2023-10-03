@@ -18,6 +18,16 @@ outreport <- snakemake@output$report
 theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "k200",
     "k250", "k300", "k350", "k400")
 
+save(logbest, file="/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/logbest.Rdat")
+save(logmulti, file="/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/logmulti.Rdat")
+save(outpng, file="/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outpng.Rdat")
+save(outreport, file="/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outreport.Rdat")
+stop("Saving objects")
+load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/logbest.Rdat")
+load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/logmulti.Rdat")
+load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outpng.Rdat")
+load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outreport.Rdat")
+
 
 #############
 ## FUNCTIONS
