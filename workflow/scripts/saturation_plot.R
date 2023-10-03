@@ -12,6 +12,9 @@ library(stringr)
 
 logbest <- snakemake@input$logVecBest
 logmulti <- snakemake@input$logVecMulti
+outpng <- snakemake@output$png
+outreport <- snakemake@output$report
+
 theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "k200",
     "k250", "k300", "k350", "k400")
 
@@ -20,7 +23,7 @@ theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "k200",
 ## FUNCTIONS
 #############
 
-saturation_study <- function(logbest, logmulti, output_folder) {
+saturation_study <- function(logbest, logmulti, outpng, outreport) {
 
     # Grouping log files per experiment
     alllog <- c(logbest, logmulti)
@@ -56,7 +59,7 @@ saturation_study <- function(logbest, logmulti, output_folder) {
 
     # Plotting the saturation curve for each experiment
     invisible(mapply(function(percentvec, outputname) {
-        png(filename = paste0(output_folder, outputname, ".png"))
+        png(filename = outpng)
         barplot(percentvec,
                 names.arg=c("best", "10", "50", "100", "150", "all"),
                 xlab="Maximum reportable alignments",
@@ -78,8 +81,7 @@ saturation_study <- function(logbest, logmulti, output_folder) {
     invisible(mapply(function(percentvec, outputname, knames) {
         percentmat <- t(as.matrix(percentvec))
         colnames(percentmat) <- knames
-        outfold <- paste0(output_folder, outputname, ".txt")
-        write.table(percentmat, file = outfold, sep="\t", quote = FALSE,
+        write.table(percentmat, file = outreport, sep="\t", quote = FALSE,
             row.names = FALSE, col.names = TRUE)}, percentlist,
             names(percentlist), MoreArgs = list(suffixvec)))
 }
@@ -91,6 +93,4 @@ saturation_study <- function(logbest, logmulti, output_folder) {
 #############
 
 cat("Generating saturation plots for ", snakemake@params$type, " end\n")
-saturation_study(logbest, logmulti,
-    paste0("../results/qc/bowtie2_saturation_multireads/",
-        snakemake@params$type, "/"))
+saturation_study(logbest, logmulti, outpng, outreport)
