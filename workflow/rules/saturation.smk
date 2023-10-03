@@ -7,8 +7,7 @@
 rule saturation_plot_bowtie_single:
   input:
     logVecBest = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log", genome = GENOMEID, singleEndName = SINGLESAMPLES),
-    logVecMulti = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log", genome = GENOMEID, singleEndName = SINGLESAMPLES, multi=MULTITHRESHOLD),
-    logVecAll = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.log", genome = GENOMEID, singleEndName = SINGLESAMPLES)
+    logVecMulti = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log", genome = GENOMEID, singleEndName = SINGLESAMPLES, multi=MULTITHRESHOLD)
   output:
     pngSingle = "../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.png",
     reportSingle = "../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.txt"
@@ -24,8 +23,7 @@ rule saturation_plot_bowtie_single:
 rule saturation_plot_bowtie_paired:
   input:
     logVecBest = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
-    logVecMulti = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi=MULTITHRESHOLD),
-    logVecAll = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
+    logVecMulti = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi=MULTITHRESHOLD)
   output:
     pngPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.png",
     reportPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt"

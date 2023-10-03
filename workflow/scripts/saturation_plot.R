@@ -12,18 +12,18 @@ library(stringr)
 
 logbest <- snakemake@input$logVecBest
 logmulti <- snakemake@input$logVecMulti
-logall <- snakemake@input$logVecAll
-theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "all")
+theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "k200",
+    "k250", "k300", "k350", "k400")
 
 
 #############
 ## FUNCTIONS
 #############
 
-saturation_study <- function(logbest, logmulti, logall, output_folder) {
+saturation_study <- function(logbest, logmulti, output_folder) {
 
     # Grouping log files per experiment
-    alllog <- c(logbest, logmulti, logall)
+    alllog <- c(logbest, logmulti)
     factorexp <- as.factor(basename(unlist(lapply(strsplit(alllog, "_trimmed"),
         "[", 1))))
     listperexp <- split(alllog, factorexp)
@@ -91,6 +91,6 @@ saturation_study <- function(logbest, logmulti, logall, output_folder) {
 #############
 
 cat("Generating saturation plots for ", snakemake@params$type, " end\n")
-saturation_study(logbest, logmulti, logall,
+saturation_study(logbest, logmulti,
     paste0("../results/qc/bowtie2_saturation_multireads/",
         snakemake@params$type, "/"))
