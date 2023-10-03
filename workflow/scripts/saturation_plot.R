@@ -61,8 +61,8 @@ saturation_study <- function(logbest, logmulti, outpng, outreport) {
     invisible(mapply(function(percentvec, outputname) {
         png(filename = outpng)
         barplot(percentvec,
-                names.arg=c("best", "10", "50", "100", "150", "all"),
-                xlab="Maximum reportable alignments",
+                names.arg = theoretical_suffixes,
+                xlab = "Maximum reportable alignments",
                 ylab = "Proportions of multi-reads")
         dev.off()
     }, percentlist, names(percentlist)))
