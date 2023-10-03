@@ -13,7 +13,7 @@ rule saturation_plot_bowtie_single:
     reportSingle = "../results/qc/bowtie2_saturation_multireads/{genome}/single/{singleEndName}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
-  benchmark: "benchmark/saturation_plot_bowtie_single/{singleEndName}.tsv"
+  benchmark: "benchmark/saturation_plot_bowtie_single/{genome}/{singleEndName}.tsv"
   params:
     type = "single"
   script:
@@ -29,7 +29,7 @@ rule saturation_plot_bowtie_paired:
     reportPaired = "../results/qc/bowtie2_saturation_multireads/{genome}/paired/{pairedEndName}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
-  benchmark: "benchmark/saturation_plot_bowtie_paired/{pairedEndName}.tsv"
+  benchmark: "benchmark/saturation_plot_bowtie_paired/{genome}/{pairedEndName}.tsv"
   params:
     type = "paired"
   script:
