@@ -153,13 +153,11 @@ MULTITHRESHOLD=["10", "50", "100", "150", "200", "250", "300", "350", "400"]
 
 single_trimmed_best = [samplename + "_trimmed_best" for samplename in SINGLESAMPLES]
 single_trimmed_k = create_k_names(SINGLESAMPLES, MULTITHRESHOLD)
-single_trimmed_all = [samplename + "_trimmed_all" for samplename in SINGLESAMPLES]
-SINGLEBESTMULTIALL = single_trimmed_best + single_trimmed_k + single_trimmed_all
+SINGLEBESTMULTI = single_trimmed_best + single_trimmed_k
 
 paired_trimmed_best = [samplename + "_trimmed_best" for samplename in PAIREDSAMPLES]
 paired_trimmed_k = create_k_names(PAIREDSAMPLES, MULTITHRESHOLD)
-paired_trimmed_all =  [samplename + "_trimmed_all" for samplename in PAIREDSAMPLES]
-PAIREDBESTMULTIALL = paired_trimmed_best + paired_trimmed_k + paired_trimmed_all
+PAIREDBESTMULTI = paired_trimmed_best + paired_trimmed_k
 
 
 ###############################################################################
@@ -276,13 +274,13 @@ rule all:
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam",
     #    genome = GENOMEID, pairedEndName = PAIREDSAMPLES)
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted.bam",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted.bam",
-    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL),
+    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted.bam.bai",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted.bam.bai",
-    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL),
+    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     expand("../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.png",
         singleEndName = SINGLESAMPLES),
     expand("../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.txt",
@@ -292,27 +290,27 @@ rule all:
     expand("../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt",
         pairedEndName = PAIREDSAMPLES),
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.txt",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam",
-    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL),
+    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.txt",
-    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL)
+    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI)
     #expand("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam.bai",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     #expand("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam.bai",
-    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL),
+    #    genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     #expand("../results/qc/elongation_size_single_csaw/{genome}/{singlebestmulti}.txt",
-    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+    #    genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     expand("../results/bigwig/single/{genome}/{singlebestmulti}.bw",
-        genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+        genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     expand("../results/bigwig/paired/{genome}/{pairedbestmulti}.bw",
-        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL),
+        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     expand("../results/bigwig/single/{genome}/{singlebestmulti}_norm.bw",
-        genome = GENOMEID, singlebestmulti = SINGLEBESTMULTIALL),
+        genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     expand("../results/bigwig/paired/{genome}/{pairedbestmulti}_norm.bw",
-        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTIALL)
+        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI)
 
 
 include: "rules/download.smk"

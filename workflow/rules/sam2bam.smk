@@ -29,19 +29,6 @@ rule sam2bam_MR_single:
     samtools view -h -b {input} > {output}
     """
 
-rule sam2bam_all_single:
-  input:
-    rules.bowtie2_all_single.output.sam
-  output:
-    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_all.bam")
-  threads: 1
-  conda: "../envs/samtools.yaml"
-  benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_all.tsv"
-  shell:
-    """
-    samtools view -h -b {input} > {output}
-    """
-
 rule sam2bam_best_paired:
   input:
     rules.bowtie2_best_paired.output.sam
@@ -63,19 +50,6 @@ rule sam2bam_MR_paired:
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_k{multi}.tsv"
-  shell:
-    """
-    samtools view -h -b {input} > {output}
-    """
-
-rule sam2bam_all_paired:
-  input:
-    rules.bowtie2_all_paired.output.sam
-  output:
-    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_all.bam")
-  threads: 1
-  conda: "../envs/samtools.yaml"
-  benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_all.tsv"
   shell:
     """
     samtools view -h -b {input} > {output}
