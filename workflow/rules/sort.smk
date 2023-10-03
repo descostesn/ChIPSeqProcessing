@@ -5,12 +5,12 @@
 
 rule sort_bowtie_single:
   input:
-    "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}.bam"
+    "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}.bam"
   output:
-    temp("../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted.bam")
+    temp("../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted.bam")
   threads: 24
   conda: "../envs/samtools.yaml"
-  benchmark: "benchmark/sort_bowtie_single/{genome}/{singlebestmultiall}.tsv"
+  benchmark: "benchmark/sort_bowtie_single/{genome}/{singlebestmulti}.tsv"
   params:
     memory="2G"
   shell:
@@ -20,12 +20,12 @@ rule sort_bowtie_single:
     
 rule sort_bowtie_paired:
   input:
-    "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}.bam"
+    "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}.bam"
   output:
-    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted.bam")
+    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted.bam")
   threads: 24
   conda: "../envs/samtools.yaml"
-  benchmark: "benchmark/sort_bowtie_paired/{genome}/{pairedbestmultiall}.tsv"
+  benchmark: "benchmark/sort_bowtie_paired/{genome}/{pairedbestmulti}.tsv"
   params:
     memory="2G"
   shell:

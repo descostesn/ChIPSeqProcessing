@@ -6,14 +6,14 @@
 
 rule bigwig_single:
   input:
-    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
-    baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
-    sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt"
+    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam",
+    baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam.bai",
+    sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmulti}.txt"
   output:
-    "../results/bigwig/single/{genome}/{singlebestmultiall}.bw"
+    "../results/bigwig/single/{genome}/{singlebestmulti}.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
-  benchmark: "benchmark/bigwig_single/{genome}/{singlebestmultiall}.tsv"
+  benchmark: "benchmark/bigwig_single/{genome}/{singlebestmulti}.tsv"
   shell:
     """
     SIZE=`cat {input.sizeFile}`
@@ -22,27 +22,27 @@ rule bigwig_single:
 
 rule bigwig_paired:
   input:
-    bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
-    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai"
+    bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam",
+    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam.bai"
   output:
-    "../results/bigwig/paired/{genome}/{pairedbestmultiall}.bw"
+    "../results/bigwig/paired/{genome}/{pairedbestmulti}.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
-  benchmark: "benchmark/bigwig_paired/{genome}/{pairedbestmultiall}.tsv"
+  benchmark: "benchmark/bigwig_paired/{genome}/{pairedbestmulti}.tsv"
   shell:
     "bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads"
 
 
 rule bigwig_norm_single:
   input:
-    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
-    baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai",
-    sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt"
+    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam",
+    baiFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam.bai",
+    sizeFile = "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmulti}.txt"
   output:
-    "../results/bigwig/single/{genome}/{singlebestmultiall}_norm.bw"
+    "../results/bigwig/single/{genome}/{singlebestmulti}_norm.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
-  benchmark: "benchmark/bigwig_norm_single/{genome}/{singlebestmultiall}.tsv"
+  benchmark: "benchmark/bigwig_norm_single/{genome}/{singlebestmulti}.tsv"
   shell:
     """
     SIZE=`cat {input.sizeFile}`
@@ -51,13 +51,13 @@ rule bigwig_norm_single:
 
 rule bigwig_norm_paired:
   input:
-    bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam",
-    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmultiall}_sorted_noDups.bam.bai"
+    bamFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam",
+    baiFile = "../results/bam/paired/bowtie2_results/{genome}/{pairedbestmulti}_sorted_noDups.bam.bai"
   output:
-    "../results/bigwig/paired/{genome}/{pairedbestmultiall}_norm.bw"
+    "../results/bigwig/paired/{genome}/{pairedbestmulti}_norm.bw"
   threads: 1
   conda: "../envs/deeptools.yaml"
-  benchmark: "benchmark/bigwig_norm_paired/{genome}/{pairedbestmultiall}.tsv"
+  benchmark: "benchmark/bigwig_norm_paired/{genome}/{pairedbestmulti}.tsv"
   shell:
     "bamCoverage --bam {input.bamFile} --outFileName {output} --outFileFormat bigwig --binSize 50 --numberOfProcessors {threads} --effectiveGenomeSize 2652783500 --extendReads --normalizeUsing RPGC --ignoreForNormalization chrX"
     

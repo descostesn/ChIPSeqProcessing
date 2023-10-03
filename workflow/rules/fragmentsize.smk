@@ -7,12 +7,12 @@
 
 rule retrieve_elongationSize_single:
   input:
-    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam",
-    baiindex = "../results/bam/single/bowtie2_results/{genome}/{singlebestmultiall}_sorted_nodups.bam.bai"
+    bamFile = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam",
+    baiindex = "../results/bam/single/bowtie2_results/{genome}/{singlebestmulti}_sorted_nodups.bam.bai"
   output:
-    "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmultiall}.txt"
+    "../results/qc/elongation_size_single_csaw/{genome}/{singlebestmulti}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
-  benchmark: "benchmark/retrieve_elongationSize_single/{genome}/{singlebestmultiall}.tsv"
+  benchmark: "benchmark/retrieve_elongationSize_single/{genome}/{singlebestmulti}.tsv"
   script:
     "../scripts/elongationSingleEnd.R"
