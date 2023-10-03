@@ -6,11 +6,11 @@
 
 rule saturation_plot_bowtie_single:
   input:
-    logVecBest = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log", genome = GENOMEID, singleEndName = SINGLESAMPLES),
-    logVecMulti = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log", genome = GENOMEID, singleEndName = SINGLESAMPLES, multi=MULTITHRESHOLD)
+    logVecBest = "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.log",
+    logVecMulti = expand("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi}.log", multi=MULTITHRESHOLD)
   output:
-    pngSingle = "../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.png",
-    reportSingle = "../results/qc/bowtie2_saturation_multireads/single/{singleEndName}.txt"
+    pngSingle = "../results/qc/bowtie2_saturation_multireads/{genome}/single/{singleEndName}.png",
+    reportSingle = "../results/qc/bowtie2_saturation_multireads/{genome}/single/{singleEndName}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
   benchmark: "benchmark/saturation_plot_bowtie_single/{singleEndName}.tsv"
@@ -22,11 +22,11 @@ rule saturation_plot_bowtie_single:
 
 rule saturation_plot_bowtie_paired:
   input:
-    logVecBest = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES),
-    logVecMulti = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log", genome = GENOMEID, pairedEndName = PAIREDSAMPLES, multi=MULTITHRESHOLD)
+    logVecBest = "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.log",
+    logVecMulti = expand("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi}.log", multi=MULTITHRESHOLD)
   output:
-    pngPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.png",
-    reportPaired = "../results/qc/bowtie2_saturation_multireads/paired/{pairedEndName}.txt"
+    pngPaired = "../results/qc/bowtie2_saturation_multireads/{genome}/paired/{pairedEndName}.png",
+    reportPaired = "../results/qc/bowtie2_saturation_multireads/{genome}/paired/{pairedEndName}.txt"
   threads: 1
   conda: "../envs/rCoreAndLibraries.yaml"
   benchmark: "benchmark/saturation_plot_bowtie_paired/{pairedEndName}.tsv"
