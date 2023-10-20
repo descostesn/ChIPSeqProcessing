@@ -107,14 +107,14 @@ saturation_study <- function(logbest, logmulti, outpng, outreport) {
 ## MAIN
 #############
 
-# outfoldpng <- dirname(outpng)
-# outfoldreport <- dirname(outreport)
+outfoldpng <- dirname(outpng)
+outfoldreport <- dirname(outreport)
 
-# if (!isTRUE(all.equal(outfoldpng, outfoldreport)))
-#     stop("The directories for png and report should be the same")
+if (!isTRUE(all.equal(outfoldpng, outfoldreport)))
+    stop("The directories for png and report should be the same")
 
-# if (!file.exists(outfoldpng))
-#     dir.create(outfoldpng, recursive = TRUE)
+if (!file.exists(outfoldpng))
+    dir.create(outfoldpng, recursive = TRUE)
 
 cat("Generating saturation plots for ", snakemake@params$type, " end\n")
 saturation_study(logbest, logmulti, outpng, outreport)
