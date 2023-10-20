@@ -28,10 +28,10 @@ theoretical_suffixes <- c("best", "k10",  "k50",  "k100", "k150", "k200",
 # load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outpng.Rdat")
 # load("/g/romebioinfo/Projects/TEbench/workflow/jobs/ChIPSeqProcessing_saturation_plot_bowtie_paired/outreport.Rdat")
 
-message("\n\n\n The current path is: \n\n")
-print(getwd())
-message("\n\n\n")
-stop()
+# message("\n\n\n The current path is: \n\n")
+# print(getwd())
+# message("\n\n\n")
+# stop()
 
 
 #############
@@ -106,6 +106,15 @@ saturation_study <- function(logbest, logmulti, outpng, outreport) {
 #############
 ## MAIN
 #############
+
+# outfoldpng <- dirname(outpng)
+# outfoldreport <- dirname(outreport)
+
+# if (!isTRUE(all.equal(outfoldpng, outfoldreport)))
+#     stop("The directories for png and report should be the same")
+
+# if (!file.exists(outfoldpng))
+#     dir.create(outfoldpng, recursive = TRUE)
 
 cat("Generating saturation plots for ", snakemake@params$type, " end\n")
 saturation_study(logbest, logmulti, outpng, outreport)
