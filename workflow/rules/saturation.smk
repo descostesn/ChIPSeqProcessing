@@ -36,6 +36,6 @@ rule saturation_plot_bowtie_paired:
     "../scripts/saturation_plot.R" 
 
 
-!!!!!!!!!!!!!!!!!!!!
-Do rule to retrieve a table of nb of alignment per read
-!!!!!!!!!!!!!!!!!!!!!!
+#!!!!!!!!!!!!!!!!!!!!
+#Do rule to retrieve a table of nb of alignment per read
+#!!!!!!!!!!!!!!!!!!!!!!
