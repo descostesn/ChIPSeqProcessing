@@ -36,6 +36,9 @@ chromvec <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
 
 ncores <- 21
 
+outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
+
+
 
 ##################
 # MAIN
@@ -43,13 +46,14 @@ ncores <- 21
 
 # bamFile <- bamvec[10]
 # bamName <- namesbamvec[10]
-mapply(function(bamFile, bamName, expname, chromvec, ncores) {
+mapply(function(bamFile, bamName, expname, chromvec, ncores, outputfold) {
 
     message("Reading ", expname, "-", bamName)
+    outputfold1 <- file.path(outputfold, expname, bamName)
 
     ## Importing bam reads per chromosome
     #chrom <- chromvec[1]
-    freqseqlist <- parallel::mclapply(chromvec, function(chrom) {
+    freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
 
         message("\t chr", chrom)
         ## Retrieving the sequence name (rname) on the defined chrom (qname)
@@ -66,8 +70,31 @@ mapply(function(bamFile, bamName, expname, chromvec, ncores) {
 
         message("\t\t Counting")
         freqseq <- table(x[[1]])
+        mat <- cbind(ID = rownames(freqseq),
+            Freq = as.numeric(freqseq[, which(colnames(freqseq) == chrom)]))
+        valuesvec <- as.numeric(mat[, "Freq"])
+        sumstat <- summary(valuesvec, digits = 4)
+        titlehist <- paste(names(sumstat), sumstat, collapse = "-")
+
+        if (!file.exists(outfold))
+            dir.create(outfold, recursive = TRUE)
+
+        message("\t\t Plotting")
+        png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
+        hist(valuesvec, main = titlehist,
+            xlab = paste0("Nb of matches on chr", chrom),
+            ylab = "Nb of sequences", breaks = 1000)
+        dev.off()
+
+        png(filename = file.path(outfold,
+            paste0("chr", chrom, "-limitedQuart.png")))
+        hist(valuesvec, main = titlehist,
+            xlab = paste0("Nb of matches on chr", chrom),
+            ylab = "Nb of sequences", breaks = 1000,
+            xlim = c(0, sumstat[5] + 40))
+        dev.off()
 
         return(freqseq)
-    }, mc.cores = ncores)
+    }, outputfold1, mc.cores = ncores)
 
-}, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores))
+}, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
