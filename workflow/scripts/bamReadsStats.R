@@ -167,10 +167,6 @@ mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
     ## chromosome
     matfreqperchrom <- buildingmatmatchesperchrom(freqseqlist, ncores)
 
-
-
-
-
     ## Several operations:
     ## 1) Count nb of sequences having matches on several chromosomes
     ## 2) Building a vector of counts for each sequence
@@ -178,4 +174,11 @@ mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
         oneormorechrom <- uniqueormultichrom(currentseqfreq)
         allmatches <- sum(currentseqfreq)
     }, simplify = FALSE)
+
+    tablabeloccupancy <- table(countsreslist[[1]])
+    nbmatchseqvec <- countsreslist[[2]]
+
+    barplot(tablabeloccupancy)
+    hist(nbmatchseqvec, breaks = 1000)
+
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
