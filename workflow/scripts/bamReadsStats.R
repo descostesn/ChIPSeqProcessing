@@ -90,17 +90,46 @@ plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
 
 
     png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
-    hist(valuesvec, main = titlehist,
+    hist(valuesvec,
+        main = titlehist,
         xlab = paste0("Nb of matches on chr", chrom),
-        ylab = "Nb of sequences", breaks = 1000)
+        ylab = "Nb of sequences", breaks = 1000
+    )
     dev.off()
 
     png(filename = file.path(outfold, paste0("chr", chrom, "-limitedQuart.png"))) # nolint
-    hist(valuesvec, main = titlehist,
+    hist(valuesvec,
+        main = titlehist,
         xlab = paste0("Nb of matches on chr", chrom),
         ylab = "Nb of sequences", breaks = 1000,
-        xlim = c(0, sumstat[5] + 40))
+        xlim = c(0, sumstat[5] + 40)
+    )
     dev.off()
+}
+
+buildingmatmatchesperchrom <- function(freqseqlist, ncores) {
+    message("\t\t Building matrix")
+
+    ## Retrieving the names of all sequences
+    seqnamesvec <- unique(unlist(lapply(freqseqlist, names)))
+
+    ## Retrieving the count for each sequence on each chromosome
+    reslist <- parallel::mclapply(freqseqlist, function(x, allnames) {
+        res <- x[allnames]
+        idxna <- which(is.na(res))
+        if (!isTRUE(all.equal(length(idxna), 0)))
+            res[idxna] <- 0
+        return(res)
+    }, seqnamesvec, mc.cores = ncores)
+
+    ## Verify that all elements of list have the same number of counts
+    if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1)))
+        stop("Problem in retrieving the counts for each chromosome")
+
+    ## Building a matrix with number of matches per chromosomes
+    matfreqperchrom <- do.call("cbind", reslist)
+
+    return(matfreqperchrom)
 }
 
 uniqueormultichrom <- function(currentseq) {
@@ -115,45 +144,32 @@ uniqueormultichrom <- function(currentseq) {
     }
 }
 
+
+
 ##################
 # MAIN
 ##################
 
-# bamfile <- bamvec[3]
-# bamname <- namesbamvec[3]
 mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
     message("Reading ", expname, "-", bamname)
     outputfold1 <- file.path(outputfold, expname, bamname)
 
-    ## Importing bam reads per chromosome
-    # chrom <- chromvec[1]
+    ## Counting number of matches per chromosome
     freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
         x <- readingseqonchrom(chrom, bamfile)
         freqseq <- computefreqonchrom(x)
         plotnbmatchesperchrom(freqseq, outfold, chrom)
         return(freqseq)
     }, outputfold1, mc.cores = ncores)
-
     names(freqseqlist) <- chromvec
 
-    ## Retrieving the names of all sequences
-    seqnamesvec <- unique(unlist(lapply(freqseqlist, names)))
-    ## Retrieving the count for each sequence on each chromosome
-    reslist <- parallel::mclapply(freqseqlist, function(x, allnames) {
-        res <- x[allnames]
-        idxNA <- which(is.na(res))
-        if (!isTRUE(all.equal(length(idxNA), 0))) {
-            res[idxNA] <- 0
-        }
-        return(res)
-    }, seqnamesvec, mc.cores = ncores)
-    ## Verify that all elements of list have the same number of counts
-    if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1))) {
-        stop("Problem in retrieving the counts for each chromosome")
-    }
+    ## Building a matrix of the number of matches of each sequence on each
+    ## chromosome
+    matfreqperchrom <- buildingmatmatchesperchrom(freqseqlist, ncores)
 
-    ## Building a matrix with number of matches per chromosomes
-    matfreqperchrom <- do.call("cbind", reslist)
+
+
+
 
     ## Several operations:
     ## 1) Count nb of sequences having matches on several chromosomes
