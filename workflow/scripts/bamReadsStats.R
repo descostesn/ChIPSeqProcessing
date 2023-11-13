@@ -49,6 +49,26 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 # FUNCTIONS
 ##################
 
+readingseqonchrom <- function(chrom, bamfile) {
+
+    message("\t\t Reading on chr ", chrom)
+
+    ## Retrieving the sequence name (rname) on the defined chrom (qname)
+    params <- Rsamtools::ScanBamParam(what = c("rname", "qname"),
+        which = GRanges(chrom, IRanges(1, 1e8)),
+        flag = scanBamFlag(isUnmappedQuery = FALSE))
+    x <- Rsamtools::scanBam(bamfile, index = bamfile, param = params)[[1]]
+
+    ## Sanity check
+    chromread <- as.character(unique(x[[2]]))
+    if (!isTRUE(all.equal(length(chromread), 1)) ||
+        !isTRUE(all.equal(chromread, chrom))) {
+        stop("Problem in reading the bam file per chromosome")
+    }
+
+    return(x)
+}
+
 uniqueormultichrom <- function(currentseq) {
     idx <- which(currentseq != 0)
 
@@ -65,30 +85,17 @@ uniqueormultichrom <- function(currentseq) {
 # MAIN
 ##################
 
-# bamFile <- bamvec[3]
-# bamName <- namesbamvec[3]
-mapply(function(bamFile, bamName, expname, chromvec, ncores, outputfold) {
-    message("Reading ", expname, "-", bamName)
-    outputfold1 <- file.path(outputfold, expname, bamName)
+# bamfile <- bamvec[3]
+# bamname <- namesbamvec[3]
+mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
+    message("Reading ", expname, "-", bamname)
+    outputfold1 <- file.path(outputfold, expname, bamname)
 
     ## Importing bam reads per chromosome
     # chrom <- chromvec[1]
     freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
-        message("\t chr", chrom)
-        ## Retrieving the sequence name (rname) on the defined chrom (qname)
-        params <- Rsamtools::ScanBamParam(
-            what = c("rname", "qname"),
-            which = GRanges(chrom, IRanges(1, 1e8)),
-            flag = scanBamFlag(isUnmappedQuery = FALSE)
-        )
-        message("\t\t Reading")
-        x <- Rsamtools::scanBam(bamFile, index = bamFile, param = params)[[1]]
-        chromread <- as.character(unique(x[[2]]))
+        x <- readingseqonchrom(chrom, bamfile)
 
-        if (!isTRUE(all.equal(length(chromread), 1)) ||
-            !isTRUE(all.equal(chromread, chrom))) {
-            stop("Problem in reading the bam file per chromosome")
-        }
 
         message("\t\t Counting")
         freqseq <- table(x[[1]])
@@ -156,5 +163,4 @@ mapply(function(bamFile, bamName, expname, chromvec, ncores, outputfold) {
         oneormorechrom <- uniqueormultichrom(currentseqfreq)
         allmatches <- sum(currentseqfreq)
     }, simplify = FALSE)
-
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
