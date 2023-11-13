@@ -50,13 +50,14 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 ##################
 
 readingseqonchrom <- function(chrom, bamfile) {
-
     message("\t\t Reading on chr ", chrom)
 
     ## Retrieving the sequence name (rname) on the defined chrom (qname)
-    params <- Rsamtools::ScanBamParam(what = c("rname", "qname"),
+    params <- Rsamtools::ScanBamParam(
+        what = c("rname", "qname"),
         which = GRanges(chrom, IRanges(1, 1e8)),
-        flag = scanBamFlag(isUnmappedQuery = FALSE))
+        flag = scanBamFlag(isUnmappedQuery = FALSE)
+    )
     x <- Rsamtools::scanBam(bamfile, index = bamfile, param = params)[[1]]
 
     ## Sanity check
@@ -67,6 +68,39 @@ readingseqonchrom <- function(chrom, bamfile) {
     }
 
     return(x)
+}
+
+computefreqonchrom <- function(x) {
+    message("\t\t Counting nb of sequence matches on the chromosome")
+    freqseq <- table(x[[1]])
+    return(freqseq)
+}
+
+plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
+    message("\t\t Plotting")
+
+    if (!file.exists(outfold)) {
+        dir.create(outfold, recursive = TRUE)
+    }
+
+    mat <- cbind(ID = rownames(freqseq), Freq = as.numeric(freqseq))
+    valuesvec <- as.numeric(mat[, "Freq"])
+    sumstat <- summary(valuesvec, digits = 4)
+    titlehist <- paste(names(sumstat), sumstat, collapse = "-")
+
+
+    png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
+    hist(valuesvec, main = titlehist,
+        xlab = paste0("Nb of matches on chr", chrom),
+        ylab = "Nb of sequences", breaks = 1000)
+    dev.off()
+
+    png(filename = file.path(outfold, paste0("chr", chrom, "-limitedQuart.png"))) # nolint
+    hist(valuesvec, main = titlehist,
+        xlab = paste0("Nb of matches on chr", chrom),
+        ylab = "Nb of sequences", breaks = 1000,
+        xlim = c(0, sumstat[5] + 40))
+    dev.off()
 }
 
 uniqueormultichrom <- function(currentseq) {
@@ -95,43 +129,8 @@ mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
     # chrom <- chromvec[1]
     freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
         x <- readingseqonchrom(chrom, bamfile)
-
-
-        message("\t\t Counting")
-        freqseq <- table(x[[1]])
-        mat <- cbind(
-            ID = rownames(freqseq),
-            Freq = as.numeric(freqseq)
-        )
-        valuesvec <- as.numeric(mat[, "Freq"])
-        sumstat <- summary(valuesvec, digits = 4)
-        titlehist <- paste(names(sumstat), sumstat, collapse = "-")
-
-        if (!file.exists(outfold)) {
-            dir.create(outfold, recursive = TRUE)
-        }
-
-        message("\t\t Plotting")
-        png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
-        hist(valuesvec,
-            main = titlehist,
-            xlab = paste0("Nb of matches on chr", chrom),
-            ylab = "Nb of sequences", breaks = 1000
-        )
-        dev.off()
-
-        png(filename = file.path(
-            outfold,
-            paste0("chr", chrom, "-limitedQuart.png")
-        ))
-        hist(valuesvec,
-            main = titlehist,
-            xlab = paste0("Nb of matches on chr", chrom),
-            ylab = "Nb of sequences", breaks = 1000,
-            xlim = c(0, sumstat[5] + 40)
-        )
-        dev.off()
-
+        freqseq <- computefreqonchrom(x)
+        plotnbmatchesperchrom(freqseq, outfold, chrom)
         return(freqseq)
     }, outputfold1, mc.cores = ncores)
 
