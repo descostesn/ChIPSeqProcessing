@@ -44,8 +44,8 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 # MAIN
 ##################
 
-# bamFile <- bamvec[2]
-# bamName <- namesbamvec[2]
+# bamFile <- bamvec[3]
+# bamName <- namesbamvec[3]
 mapply(function(bamFile, bamName, expname, chromvec, ncores, outputfold) {
 
     message("Reading ", expname, "-", bamName)
