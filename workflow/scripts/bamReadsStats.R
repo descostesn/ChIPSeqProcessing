@@ -71,7 +71,7 @@ mapply(function(bamFile, bamName, expname, chromvec, ncores, outputfold) {
         message("\t\t Counting")
         freqseq <- table(x[[1]])
         mat <- cbind(ID = rownames(freqseq),
-            Freq = as.numeric(freqseq[, which(colnames(freqseq) == chrom)]))
+            Freq = as.numeric(freqseq))
         valuesvec <- as.numeric(mat[, "Freq"])
         sumstat <- summary(valuesvec, digits = 4)
         titlehist <- paste(names(sumstat), sumstat, collapse = "-")
