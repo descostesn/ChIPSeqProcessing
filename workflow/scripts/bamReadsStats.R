@@ -151,6 +151,7 @@ uniqueormultichrom <- function(currentseq) {
 ##################
 
 mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
+
     message("Reading ", expname, "-", bamname)
     outputfold1 <- file.path(outputfold, expname, bamname)
 
@@ -170,10 +171,24 @@ mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
     ## Several operations:
     ## 1) Count nb of sequences having matches on several chromosomes
     ## 2) Building a vector of counts for each sequence
-    countsreslist <- apply(matfreqperchrom, 1, function(currentseqfreq) {
+    countsreslist <- parRapply(cl, matfreqperchrom, function(currentseqfreq) {
         oneormorechrom <- uniqueormultichrom(currentseqfreq)
         allmatches <- sum(currentseqfreq)
     }, simplify = FALSE)
+
+
+!!!!!!!!!!!
+cl <- makeCluster(ncores)
+start_time <- Sys.time()
+labeloccupancyvec <- parRapply(cl, matfreqperchrom, uniqueormultichrom)
+end_time <- Sys.time()
+print(end_time - start_time)
+start_time2 <- Sys.time()
+nbmatchseqvec <- parRapply(cl, matfreqperchrom, sum)
+end_time2 <- Sys.time()
+print(end_time2 - start_time2)
+stopCluster(cl)
+!!!!!!!!!!!!!!
 
     tablabeloccupancy <- table(countsreslist[[1]])
     nbmatchseqvec <- countsreslist[[2]]
