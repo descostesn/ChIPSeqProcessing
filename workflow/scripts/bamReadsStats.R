@@ -199,6 +199,20 @@ nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec,
     tablabeloccupancy <- table(countsreslist[[1]])
     nbmatchseqvec <- countsreslist[[2]]
     plotcounts(outputfold1, tablabeloccupancy, nbmatchseqvec)
-
+    gc(verbose = FALSE)
     return(nbmatchseqvec)
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
+
+
+message("Retrieving nb of sequences with max nb of matches for all bam files")
+maxnbmatchvec <- mapply(function(nbmatchseq, bamname) {
+
+    message("\t Computing frequencies for ", bamname)
+    tabnbmatchseq <- table(nbmatchseq)
+    return(tabnbmatchseq[which.max(tabnbmatchseq)])
+}, nbmatchseqlist, namesbamvec, SIMPLIFY = TRUE)
+names(maxnbmatchvec) <- namesbamvec
+
+png(file = file.path(output_folder, expname, "nbseqperthreshold.png"))
+barplot(maxnbmatchvec, xlab = "Bam threshold", ylab = "Nb of sequences")
+dev.off()
