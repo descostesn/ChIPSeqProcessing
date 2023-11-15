@@ -117,14 +117,16 @@ buildingmatmatchesperchrom <- function(freqseqlist, ncores) {
     reslist <- parallel::mclapply(freqseqlist, function(x, allnames) {
         res <- x[allnames]
         idxna <- which(is.na(res))
-        if (!isTRUE(all.equal(length(idxna), 0)))
+        if (!isTRUE(all.equal(length(idxna), 0))) {
             res[idxna] <- 0
+        }
         return(res)
     }, seqnamesvec, mc.cores = ncores)
 
     ## Verify that all elements of list have the same number of counts
-    if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1)))
+    if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1))) {
         stop("Problem in retrieving the counts for each chromosome")
+    }
 
     ## Building a matrix with number of matches per chromosomes
     matfreqperchrom <- do.call("cbind", reslist)
@@ -144,13 +146,35 @@ uniqueormultichrom <- function(currentseq) {
     }
 }
 
+labelsandmismatches <- function(ncores, matfreqperchrom) {
+    message("\t\t Computing occupancy and mismatches")
+    cl <- makeCluster(ncores)
+    labeloccupancyvec <- parRapply(cl, matfreqperchrom, uniqueormultichrom)
+    nbmatchseqvec <- parRapply(cl, matfreqperchrom, sum)
+    stopCluster(cl)
+    return(list(labeloccupancyvec, nbmatchseqvec))
+}
 
+plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
+    message("\t\t Plotting occupancy and mismatches")
+    png(file = file.path(outputfold1, "nbchrommatchesbyseq.png"))
+    barplot(tablabeloccupancy,
+        xlab = "Number of chromosomes with match per sequence",
+        ylab = "Number of sequences")
+    dev.off()
+
+    png(file = file.path(outputfold1, "nbseqmatches.png"))
+    hist(nbmatchseqvec, breaks = 1000, xlab = "Number of matches",
+        ylab = "Number of sequences")
+    dev.off()
+}
 
 ##################
 # MAIN
 ##################
 
-mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
+nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec,
+    ncores, outputfold) {
 
     message("Reading ", expname, "-", bamname)
     outputfold1 <- file.path(outputfold, expname, bamname)
@@ -171,29 +195,10 @@ mapply(function(bamfile, bamname, expname, chromvec, ncores, outputfold) {
     ## Several operations:
     ## 1) Count nb of sequences having matches on several chromosomes
     ## 2) Building a vector of counts for each sequence
-    countsreslist <- parRapply(cl, matfreqperchrom, function(currentseqfreq) {
-        oneormorechrom <- uniqueormultichrom(currentseqfreq)
-        allmatches <- sum(currentseqfreq)
-    }, simplify = FALSE)
-
-
-!!!!!!!!!!!
-cl <- makeCluster(ncores)
-start_time <- Sys.time()
-labeloccupancyvec <- parRapply(cl, matfreqperchrom, uniqueormultichrom)
-end_time <- Sys.time()
-print(end_time - start_time)
-start_time2 <- Sys.time()
-nbmatchseqvec <- parRapply(cl, matfreqperchrom, sum)
-end_time2 <- Sys.time()
-print(end_time2 - start_time2)
-stopCluster(cl)
-!!!!!!!!!!!!!!
-
+    countsreslist <- labelsandmismatches(ncores, matfreqperchrom)
     tablabeloccupancy <- table(countsreslist[[1]])
     nbmatchseqvec <- countsreslist[[2]]
+    plotcounts(outputfold1, tablabeloccupancy, nbmatchseqvec)
 
-    barplot(tablabeloccupancy)
-    hist(nbmatchseqvec, breaks = 1000)
-
+    return(nbmatchseqvec)
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
