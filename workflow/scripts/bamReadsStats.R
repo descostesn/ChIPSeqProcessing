@@ -3,7 +3,7 @@
 # to a threshold k. It also creates an histogram showing the number of sequences
 # having x matches for each experiment.
 #
-# Descostes - Nov 2023 - R 4.2.2-foss-2022b
+# Descostes - Nov 2023 -R 4.3.2 (mamba env)
 ################
 
 library(Rsamtools)
