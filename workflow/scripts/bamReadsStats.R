@@ -202,7 +202,7 @@ nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec,
     gc(verbose = FALSE)
     return(nbmatchseqvec)
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
-
+save(nbmatchseqlist, file="/g/romebioinfo/Projects/TEbench/results/tmp/nbmatchseqlist.Rdat")
 
 message("Retrieving nb of sequences with max nb of matches for all bam files")
 maxnbmatchvec <- mapply(function(nbmatchseq, bamname) {
