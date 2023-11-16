@@ -70,14 +70,13 @@ readingseqonchrom <- function(chrom, bamfile) {
     return(x)
 }
 
-computefreqonchrom <- function(x) {
-    message("\t\t Counting nb of sequence matches on the chromosome")
-    xf <- collapse::qF(x[[1]])
+fasttable <- function(x) {
+    xf <- collapse::qF(x)
     levelvec <- levels(xf)
     levels(xf) <- seq_len(length(levelvec))
-    freqseq <- tabulate(xf)
-    names(freqseq) <- levelvec
-    return(freqseq)
+    res <- tabulate(xf)
+    names(res) <- levelvec
+    return(res)
 }
 
 plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
@@ -164,12 +163,15 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
     png(file = file.path(outputfold1, "nbchrommatchesbyseq.png"))
     barplot(tablabeloccupancy,
         xlab = "Number of chromosomes with match per sequence",
-        ylab = "Number of sequences")
+        ylab = "Number of sequences"
+    )
     dev.off()
 
     png(file = file.path(outputfold1, "nbseqmatches.png"))
-    hist(nbmatchseqvec, breaks = 1000, xlab = "Number of matches",
-        ylab = "Number of sequences")
+    hist(nbmatchseqvec,
+        breaks = 1000, xlab = "Number of matches",
+        ylab = "Number of sequences"
+    )
     dev.off()
 }
 
@@ -177,24 +179,19 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
 # MAIN
 ##################
 
-nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec,
+nbmatchseqlist <- mapply(function(
+    bamfile, bamname, expname, chromvec,
     ncores, outputfold) {
-
     message("Reading ", expname, "-", bamname)
     outputfold1 <- file.path(outputfold, expname, bamname)
 
     ## Counting number of matches per chromosome
     freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
         x <- readingseqonchrom(chrom, bamfile)
-        !!!!!!!!!!!!
-        start_time <- Sys.time()
-freqseq <- computefreqonchrom(x)
-end_time <- Sys.time()
-end_time - start_time
-
-        !!!!!!!!!!!!!!
-        freqseq <- computefreqonchrom(x)
+        message("\t\t Counting nb of sequence matches on the chromosome")
+        freqseq <- fasttable(x[[1]])
         plotnbmatchesperchrom(freqseq, outfold, chrom)
+        gc(verbose = FALSE)
         return(freqseq)
     }, outputfold1, mc.cores = ncores)
     names(freqseqlist) <- chromvec
@@ -207,17 +204,16 @@ end_time - start_time
     ## 1) Count nb of sequences having matches on several chromosomes
     ## 2) Building a vector of counts for each sequence
     countsreslist <- labelsandmismatches(ncores, matfreqperchrom)
-    tablabeloccupancy <- table(countsreslist[[1]])
+    tablabeloccupancy <- fasttable(countsreslist[[1]])
     nbmatchseqvec <- countsreslist[[2]]
     plotcounts(outputfold1, tablabeloccupancy, nbmatchseqvec)
     gc(verbose = FALSE)
     return(nbmatchseqvec)
 }, bamvec, namesbamvec, MoreArgs = list(expname, chromvec, ncores, outputfold))
-save(nbmatchseqlist, file="/g/romebioinfo/Projects/TEbench/results/tmp/nbmatchseqlist.Rdat")
+save(nbmatchseqlist, file = "/g/romebioinfo/Projects/TEbench/results/tmp/nbmatchseqlist.Rdat")
 
 message("Retrieving nb of sequences with max nb of matches for all bam files")
 maxnbmatchvec <- mapply(function(nbmatchseq, bamname) {
-
     message("\t Computing frequencies for ", bamname)
     tabnbmatchseq <- table(nbmatchseq)
     return(tabnbmatchseq[which.max(tabnbmatchseq)])
