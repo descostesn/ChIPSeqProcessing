@@ -10,4 +10,4 @@
 
 mamba activate R-4.3.2
 
-srun Rscript bamReadsStats_test.R
+Rscript bamReadsStats_test.R
