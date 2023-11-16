@@ -179,9 +179,9 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
 # MAIN
 ##################
 
-nbmatchseqlist <- mapply(function(
-    bamfile, bamname, expname, chromvec,
-    ncores, outputfold) {
+nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec, ncores,
+    outputfold) {
+
     message("Reading ", expname, "-", bamname)
     outputfold1 <- file.path(outputfold, expname, bamname)
 
@@ -199,6 +199,8 @@ nbmatchseqlist <- mapply(function(
     ## Building a matrix of the number of matches of each sequence on each
     ## chromosome
     matfreqperchrom <- buildingmatmatchesperchrom(freqseqlist, ncores)
+    rm(freqseqlist)
+    gc(verbose = FALSE)
 
     ## Several operations:
     ## 1) Count nb of sequences having matches on several chromosomes
