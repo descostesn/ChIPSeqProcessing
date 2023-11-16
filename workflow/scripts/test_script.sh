@@ -8,8 +8,4 @@
 #SBATCH --output slurm_%x_%A_%a.out
 
 
-conda activate R-4.3.2
-
 Rscript bamReadsStats_test.R
-
-conda deactivate
