@@ -8,7 +8,7 @@
 
 library(Rsamtools)
 library(parallel)
-
+library(collapse)
 
 
 ##################
@@ -72,7 +72,11 @@ readingseqonchrom <- function(chrom, bamfile) {
 
 computefreqonchrom <- function(x) {
     message("\t\t Counting nb of sequence matches on the chromosome")
-    freqseq <- table(x[[1]])
+    xf <- collapse::qF(x[[1]])
+    levelvec <- levels(xf)
+    levels(xf) <- seq_len(length(levelvec))
+    freqseq <- tabulate(xf)
+    names(freqseq) <- levelvec
     return(freqseq)
 }
 
@@ -182,6 +186,13 @@ nbmatchseqlist <- mapply(function(bamfile, bamname, expname, chromvec,
     ## Counting number of matches per chromosome
     freqseqlist <- parallel::mclapply(chromvec, function(chrom, outfold) {
         x <- readingseqonchrom(chrom, bamfile)
+        !!!!!!!!!!!!
+        start_time <- Sys.time()
+freqseq <- computefreqonchrom(x)
+end_time <- Sys.time()
+end_time - start_time
+
+        !!!!!!!!!!!!!!
         freqseq <- computefreqonchrom(x)
         plotnbmatchesperchrom(freqseq, outfold, chrom)
         return(freqseq)
