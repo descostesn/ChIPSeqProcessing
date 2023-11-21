@@ -8,4 +8,4 @@
 #SBATCH --output slurm_%x_%A_%a.out
 
 
-Rscript bamReadsStats_test.R
+Rscript bamReadsStats_test_reducebyyield_severalfiles.R
