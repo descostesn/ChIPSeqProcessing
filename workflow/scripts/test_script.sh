@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --nodes 1
-#SBATCH --mem=20gb
+#SBATCH --mem=100gb
 #SBATCH --job-name testRead
 #SBATCH --ntasks=1
 #SBATCH --time 08:50:00
