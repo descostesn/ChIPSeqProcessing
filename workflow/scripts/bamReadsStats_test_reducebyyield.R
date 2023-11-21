@@ -20,10 +20,7 @@ library(IRanges)
 bamvec <- c("/g/romebioinfo/Projects/TEbench/results/bam/paired/bowtie2_results/mm39/H3K9me3_SRR2136759_GSM1841035_GSE71589_ESC_bio2_trimmed_k150_sorted_noDups.bam")
 expname <- "H3K9me3_SRR2136759_GSM1841035_GSE71589_ESC_bio2"
 namesbamvec <- c("k150")
-chromvec <- "10"
-
-ncores <- 21
-
+ncores <- 8
 outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 
 
@@ -165,7 +162,8 @@ combinefreqtable <- function(x, y) {
 
 
 bamfile <- Rsamtools::BamFile(bamvec[1], yieldSize = 1000000)
+register(MulticoreParam())
 freqseq <- GenomicFiles::reduceByYield(bamfile,
-    YIELD = readingonchrom(bamfile, chrom),
+    YIELD = readingonchrom,
     MAP = fasttable, REDUCE = combinefreqtable, parallel = FALSE, iterate = TRUE)
 
