@@ -37,7 +37,7 @@ namesbamvec <- c(
     "k250", "k300", "k350", "k400"
 )
 
-ncores <- 8
+ncores <- 21
 
 outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 
