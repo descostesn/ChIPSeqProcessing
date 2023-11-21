@@ -48,7 +48,7 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 
 readingonchrom <- function(bamfile) {
 
-    message("\t\t Reading chunk of sequences")
+    #message("\t\t Reading chunk of sequences")
 
     ## Retrieving the sequence name (rname)
     params <- Rsamtools::ScanBamParam(
@@ -61,7 +61,7 @@ readingonchrom <- function(bamfile) {
 
 fasttable <- function(value) {
 
-    message("\t\t Counting frequencies")
+    #message("\t\t Counting frequencies")
 
     xf <- collapse::qF(value)
     levelvec <- levels(xf)
@@ -72,7 +72,7 @@ fasttable <- function(value) {
 }
 
 combinefreqtable <- function(x, y) {
-    message("Merging chunk to previous one")
+    #message("Merging chunk to previous one")
      df <- data.frame(id = c(names(x), names(y)), counts = c(x, y))
      res <- tapply(df$counts, df$id, FUN = sum)
      return(res)
@@ -112,5 +112,7 @@ freqseqlist <- mapply(function(bamfile, bamname, expname) {
     gc(verbose = FALSE)
     return(freqseq)
 }, bamvec, namesbamvec, MoreArgs = list(expname))
+message("Saving file")
 save(freqseqlist,
     file = "/g/romebioinfo/Projects/TEbench/results/tmp/freqseqlist.Rdat")
+message("done")
