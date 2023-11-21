@@ -11,7 +11,7 @@ library(parallel)
 library(collapse)
 library(GenomicFiles)
 library(GenomicRanges)
-
+library(IRanges)
 
 ##################
 # PARAMETERS
@@ -20,7 +20,7 @@ library(GenomicRanges)
 bamvec <- c("/g/romebioinfo/Projects/TEbench/results/bam/paired/bowtie2_results/mm39/H3K9me3_SRR2136759_GSM1841035_GSE71589_ESC_bio2_trimmed_k150_sorted_noDups.bam")
 expname <- "H3K9me3_SRR2136759_GSM1841035_GSE71589_ESC_bio2"
 namesbamvec <- c("k150")
-chromvec <- "9"
+chromvec <- "10"
 
 ncores <- 21
 
@@ -30,15 +30,6 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 ##################
 # FUNCTIONS
 ##################
-
-fasttable <- function(x) {
-    xf <- collapse::qF(x)
-    levelvec <- levels(xf)
-    levels(xf) <- seq_len(length(levelvec))
-    res <- tabulate(xf)
-    names(res) <- levelvec
-    return(res)
-}
 
 plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
     message("\t\t Plotting")
@@ -140,31 +131,24 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
 # MAIN
 ##################
 
-readingonchrom <- function(bamfile, chrom) {
+readingonchrom <- function(bamfile) {
 
-    message("\t\t Reading on chr ", chrom)
+    message("\t\t Reading chunk of sequences")
 
-    ## Retrieving the sequence name (rname) on the defined chrom (qname)
+    ## Retrieving the sequence name (rname)
     params <- Rsamtools::ScanBamParam(
-        what = c("rname", "qname"),
-        which = GenomicRanges::GRanges(chrom, GenomicRanges::IRanges(1, 1e8)),
+        what = c("qname"),
         flag = Rsamtools::scanBamFlag(isUnmappedQuery = FALSE)
     )
-    Rsamtools::scanBam(bamfile, index = bamfile, param = params)[[1]]
+    Rsamtools::scanBam(bamfile, param = params)[[1]][["qname"]]
 }
-
-!!
-params <- Rsamtools::ScanBamParam(
-        what = c("rname", "qname"),
-        which = GenomicRanges::GRanges(chrom, GenomicRanges::IRanges(1, c(100000, 200000))),
-        flag = Rsamtools::scanBamFlag(isUnmappedQuery = FALSE)
-    )
-!!
 
 
 fasttable <- function(value) {
 
-    xf <- collapse::qF(value[[1]])
+    message("\t\t Counting frequencies")
+
+    xf <- collapse::qF(value)
     levelvec <- levels(xf)
     levels(xf) <- seq_len(length(levelvec))
     res <- tabulate(xf)
@@ -173,39 +157,15 @@ fasttable <- function(value) {
 }
 
 combinefreqtable <- function(x, y) {
-
+    message("Merging chunk to previous one")
+     df <- data.frame(id = c(names(x), names(y)), counts = c(x, y))
+     res <- tapply(df$counts, df$id, FUN = sum)
+     return(res)
 }
 
 
-bamfile <- BamFile(bamvec[1], yieldSize = 500)
-chrom <- chromvec[1]
+bamfile <- Rsamtools::BamFile(bamvec[1], yieldSize = 1000000)
 freqseq <- GenomicFiles::reduceByYield(bamfile,
     YIELD = readingonchrom(bamfile, chrom),
-    MAP = fasttable, REDUCE = combinefreqtable, parallel = TRUE, iterate = TRUE)
+    MAP = fasttable, REDUCE = combinefreqtable, parallel = FALSE, iterate = TRUE)
 
-
-
-
-
-## Sanity check
-    chromread <- as.character(unique(x[[2]]))
-    if (!isTRUE(all.equal(length(chromread), 1)) ||
-        !isTRUE(all.equal(chromread, chrom))) {
-        stop("Problem in reading the bam file per chromosome")
-    }
-
-
-
-
-
-
-
-
-
-
-
-# bamname <- namesbamvec
-# chrom <- chromvec
-# message("Reading ", expname, "-", bamname)
-# x <- readingseqonchrom(chrom, bamfile)
-# message("Done")
