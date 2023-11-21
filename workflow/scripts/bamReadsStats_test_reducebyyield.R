@@ -28,84 +28,84 @@ outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 # FUNCTIONS
 ##################
 
-plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
-    message("\t\t Plotting")
+# plotnbmatchesperchrom <- function(freqseq, outfold, chrom) {
+#     message("\t\t Plotting")
 
-    if (!file.exists(outfold)) {
-        dir.create(outfold, recursive = TRUE)
-    }
+#     if (!file.exists(outfold)) {
+#         dir.create(outfold, recursive = TRUE)
+#     }
 
-    mat <- cbind(ID = rownames(freqseq), Freq = as.numeric(freqseq))
-    valuesvec <- as.numeric(mat[, "Freq"])
-    sumstat <- summary(valuesvec, digits = 4)
-    titlehist <- paste(names(sumstat), sumstat, collapse = "-")
+#     mat <- cbind(ID = rownames(freqseq), Freq = as.numeric(freqseq))
+#     valuesvec <- as.numeric(mat[, "Freq"])
+#     sumstat <- summary(valuesvec, digits = 4)
+#     titlehist <- paste(names(sumstat), sumstat, collapse = "-")
 
 
-    png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
-    hist(valuesvec,
-        main = titlehist,
-        xlab = paste0("Nb of matches on chr", chrom),
-        ylab = "Nb of sequences", breaks = 1000
-    )
-    dev.off()
+#     png(filename = file.path(outfold, paste0("chr", chrom, ".png")))
+#     hist(valuesvec,
+#         main = titlehist,
+#         xlab = paste0("Nb of matches on chr", chrom),
+#         ylab = "Nb of sequences", breaks = 1000
+#     )
+#     dev.off()
 
-    png(filename = file.path(outfold, paste0("chr", chrom, "-limitedQuart.png"))) # nolint
-    hist(valuesvec,
-        main = titlehist,
-        xlab = paste0("Nb of matches on chr", chrom),
-        ylab = "Nb of sequences", breaks = 1000,
-        xlim = c(0, sumstat[5] + 40)
-    )
-    dev.off()
-}
+#     png(filename = file.path(outfold, paste0("chr", chrom, "-limitedQuart.png"))) # nolint
+#     hist(valuesvec,
+#         main = titlehist,
+#         xlab = paste0("Nb of matches on chr", chrom),
+#         ylab = "Nb of sequences", breaks = 1000,
+#         xlim = c(0, sumstat[5] + 40)
+#     )
+#     dev.off()
+# }
 
-buildingmatmatchesperchrom <- function(freqseqlist, ncores) {
-    message("\t\t Building matrix")
+# buildingmatmatchesperchrom <- function(freqseqlist, ncores) {
+#     message("\t\t Building matrix")
 
-    ## Retrieving the names of all sequences
-    seqnamesvec <- unique(unlist(lapply(freqseqlist, names)))
+#     ## Retrieving the names of all sequences
+#     seqnamesvec <- unique(unlist(lapply(freqseqlist, names)))
 
-    ## Retrieving the count for each sequence on each chromosome
-    reslist <- parallel::mclapply(freqseqlist, function(x, allnames) {
-        res <- x[allnames]
-        idxna <- which(is.na(res))
-        if (!isTRUE(all.equal(length(idxna), 0))) {
-            res[idxna] <- 0
-        }
-        return(res)
-    }, seqnamesvec, mc.cores = ncores)
+#     ## Retrieving the count for each sequence on each chromosome
+#     reslist <- parallel::mclapply(freqseqlist, function(x, allnames) {
+#         res <- x[allnames]
+#         idxna <- which(is.na(res))
+#         if (!isTRUE(all.equal(length(idxna), 0))) {
+#             res[idxna] <- 0
+#         }
+#         return(res)
+#     }, seqnamesvec, mc.cores = ncores)
 
-    ## Verify that all elements of list have the same number of counts
-    if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1))) {
-        stop("Problem in retrieving the counts for each chromosome")
-    }
+#     ## Verify that all elements of list have the same number of counts
+#     if (!isTRUE(all.equal(length(unique(lengths(reslist))), 1))) {
+#         stop("Problem in retrieving the counts for each chromosome")
+#     }
 
-    ## Building a matrix with number of matches per chromosomes
-    matfreqperchrom <- do.call("cbind", reslist)
+#     ## Building a matrix with number of matches per chromosomes
+#     matfreqperchrom <- do.call("cbind", reslist)
 
-    return(matfreqperchrom)
-}
+#     return(matfreqperchrom)
+# }
 
-uniqueormultichrom <- function(currentseq) {
-    idx <- which(currentseq != 0)
+# uniqueormultichrom <- function(currentseq) {
+#     idx <- which(currentseq != 0)
 
-    if (isTRUE(all.equal(length(idx), 1))) {
-        return("unique")
-    } else if (isTRUE(all.equal(length(idx), 0))) {
-        return("none") # This should not happen
-    } else {
-        return("several")
-    }
-}
+#     if (isTRUE(all.equal(length(idx), 1))) {
+#         return("unique")
+#     } else if (isTRUE(all.equal(length(idx), 0))) {
+#         return("none") # This should not happen
+#     } else {
+#         return("several")
+#     }
+# }
 
-labelsandmismatches <- function(ncores, matfreqperchrom) {
-    message("\t\t Computing occupancy and mismatches")
-    cl <- makeCluster(ncores)
-    labeloccupancyvec <- parRapply(cl, matfreqperchrom, uniqueormultichrom)
-    nbmatchseqvec <- parRapply(cl, matfreqperchrom, sum)
-    stopCluster(cl)
-    return(list(labeloccupancyvec, nbmatchseqvec))
-}
+# labelsandmismatches <- function(ncores, matfreqperchrom) {
+#     message("\t\t Computing occupancy and mismatches")
+#     cl <- makeCluster(ncores)
+#     labeloccupancyvec <- parRapply(cl, matfreqperchrom, uniqueormultichrom)
+#     nbmatchseqvec <- parRapply(cl, matfreqperchrom, sum)
+#     stopCluster(cl)
+#     return(list(labeloccupancyvec, nbmatchseqvec))
+# }
 
 plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
     message("\t\t Plotting occupancy and mismatches")
@@ -162,8 +162,8 @@ combinefreqtable <- function(x, y) {
 
 
 bamfile <- Rsamtools::BamFile(bamvec[1], yieldSize = 1000000)
-register(MulticoreParam())
+register(MulticoreParam(ncores))
 freqseq <- GenomicFiles::reduceByYield(bamfile,
     YIELD = readingonchrom,
-    MAP = fasttable, REDUCE = combinefreqtable, parallel = FALSE, iterate = TRUE)
+    MAP = fasttable, REDUCE = combinefreqtable, parallel = TRUE, iterate = TRUE)
 
