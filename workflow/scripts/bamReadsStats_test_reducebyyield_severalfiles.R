@@ -105,7 +105,7 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
 freqseqlist <- mapply(function(bamfile, bamname, expname) {
 
     message("Reading ", expname, "-", bamname)
-    bamfile <- Rsamtools::BamFile(bamvec[1], yieldSize = 100000000)
+    bamfile <- Rsamtools::BamFile(bamfile, yieldSize = 100000000)
     freqseq <- GenomicFiles::reduceByYield(bamfile, YIELD = readingonchrom,
     MAP = fasttable, REDUCE = combinefreqtable, parallel = FALSE,
     iterate = TRUE)
