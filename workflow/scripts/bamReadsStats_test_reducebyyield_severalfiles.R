@@ -37,7 +37,7 @@ namesbamvec <- c(
     "k250", "k300", "k350", "k400"
 )
 
-ncores <- 8
+ncores <- 3
 
 outputfold <- "/g/romebioinfo/Projects/TEbench/results/tmp"
 
@@ -99,7 +99,7 @@ plotcounts <- function(outputfold1, tablabeloccupancy, nbmatchseqvec) {
 # MAIN
 ##################
 
-#register(MulticoreParam(ncores))
+register(MulticoreParam(ncores))
 
 
 freqseqlist <- mapply(function(bamfile, bamname, expname) {
@@ -107,7 +107,7 @@ freqseqlist <- mapply(function(bamfile, bamname, expname) {
     message("Reading ", expname, "-", bamname)
     bamfile <- Rsamtools::BamFile(bamfile, yieldSize = 100000000)
     freqseq <- GenomicFiles::reduceByYield(bamfile, YIELD = readingonchrom,
-    MAP = fasttable, REDUCE = combinefreqtable, parallel = FALSE,
+    MAP = fasttable, REDUCE = combinefreqtable, parallel = TRUE,
     iterate = TRUE)
 
     gc(verbose = FALSE)
