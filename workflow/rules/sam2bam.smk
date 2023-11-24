@@ -7,7 +7,7 @@ rule sam2bam_best_single:
   input:
     rules.bowtie2_best_single.output.sam
   output:
-    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam"),
+    "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_best.bam",
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_best.tsv"
@@ -20,7 +20,7 @@ rule sam2bam_MR_single:
   input:
     rules.bowtie2_MR_single.output.sam
   output:
-    temp("../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi, [0-9]+}.bam")
+    "../results/bam/single/bowtie2_results/{genome}/{singleEndName}_trimmed_k{multi, [0-9]+}.bam"
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{singleEndName}_trimmed_k{multi}.tsv"
@@ -33,7 +33,7 @@ rule sam2bam_best_paired:
   input:
     rules.bowtie2_best_paired.output.sam
   output:
-    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam")
+    "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_best.bam"
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_best.tsv"
@@ -46,7 +46,7 @@ rule sam2bam_MR_paired:
   input:
     rules.bowtie2_MR_paired.output.sam
   output:
-    temp("../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi, [0-9]+}.bam")
+    "../results/bam/paired/bowtie2_results/{genome}/{pairedEndName}_trimmed_k{multi, [0-9]+}.bam"
   threads: 1
   conda: "../envs/samtools.yaml"
   benchmark: "benchmark/sam2bam/{genome}/{pairedEndName}_trimmed_k{multi}.tsv"
