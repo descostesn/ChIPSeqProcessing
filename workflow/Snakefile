@@ -11,7 +11,7 @@
 # Imports
 ###############################################################################
 
-import pandas
+import pandas as pd
 import os
 
 ###############################################################################
@@ -41,7 +41,7 @@ if not os.path.isfile(input_table):
 
 
 def read_samplesTable(inputTable):
-    data = pandas.read_csv(inputTable)
+    data = pd.read_csv(inputTable)
     # Verify column names
     if not {'sraname', 'samples', 'run', 'link', 'organism', 'name', 'input', 
         'experiment_title', 'cell_line', 'rep', 'study_name', 'library_strategy', 
@@ -135,9 +135,9 @@ PAIREDSAMPLES = samplesData_paired['samples'].tolist()
 
 # For Retrieving links to download sra files
 
-samples_single_df = pandas.DataFrame(samplesData_single).set_index("samples",
+samples_single_df = pd.DataFrame(samplesData_single).set_index("samples",
     drop=False)
-samples_paired_df = pandas.DataFrame(samplesData_paired).set_index("samples",
+samples_paired_df = pd.DataFrame(samplesData_paired).set_index("samples",
     drop=False)
 
 # Information regarding the genome
