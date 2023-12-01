@@ -13,6 +13,9 @@ library(GenomicFiles)
 library(GenomicRanges)
 library(IRanges)
 
+!!!!!!!!!!!!!!! Have a look at the NH tag that normally gives the number of alignment
+
+
 ##################
 # PARAMETERS
 ##################
