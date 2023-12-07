@@ -1,6 +1,6 @@
 ################################################################################
 # Sorting the bam files obtained with bowtie2 before indexing them
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule sort_bowtie_single:
