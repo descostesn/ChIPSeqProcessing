@@ -1,7 +1,7 @@
 ################################################################################
 # Estimate the real fragment size for the single-ended experiment by cross-
 # correlation.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 
