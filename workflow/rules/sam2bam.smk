@@ -1,6 +1,6 @@
 ################################################################################
 # Converting sam files obtained with Bowtie2 to Bam and sorting.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule sam2bam_best_single:
