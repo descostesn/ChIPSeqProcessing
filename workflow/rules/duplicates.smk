@@ -1,6 +1,6 @@
 ################################################################################
 # Removing duplicates tags from the bam files.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule remove_duplicates_bowtie_single:
