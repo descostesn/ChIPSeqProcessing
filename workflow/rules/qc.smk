@@ -1,6 +1,6 @@
 ################################################################################
 # Performing fastqc before trimming according to quality.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule fastqc_single_file:
@@ -35,7 +35,7 @@ rule fastqc_paired_file:
 
 ################################################################################
 # Performing fastqc after trimming according to quality.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule fastqc_after_trim_single:
