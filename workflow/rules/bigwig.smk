@@ -1,6 +1,6 @@
 ################################################################################
 # Generating the bigwigs for all experiments with and without normalization.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 

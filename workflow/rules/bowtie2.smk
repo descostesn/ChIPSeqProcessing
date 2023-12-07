@@ -1,6 +1,6 @@
 ################################################################################
 # Building bowtie2 index.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule build_bowtie_index:
@@ -30,7 +30,7 @@ rule build_bowtie_index:
 # 1) Best (best alignment is kept)
 # 2) -k (at most k alignments are kept, several values for k)
 # 3) -a (all aligments are kept)
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 
