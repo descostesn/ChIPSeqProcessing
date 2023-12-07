@@ -1,6 +1,6 @@
 ################################################################################
 # Trimming the quality of the fastq file for a minimum value of 20.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule trimming_single:
