@@ -1,7 +1,7 @@
 ################################################################################
 # Performing indexing of the sorted and duplicate removed bam files to 
 # generate the bigwig files.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule index_bam_bigwig_single:
