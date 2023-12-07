@@ -1,7 +1,7 @@
 ################################################################################
 # Performing plots of the number of multireads according to the mode of
 # alignment
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule saturation_plot_bowtie_single:
