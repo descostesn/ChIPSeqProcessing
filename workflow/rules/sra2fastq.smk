@@ -1,6 +1,6 @@
 ################################################################################
 # Convert sra files to fastq after downloading them followed by compression.
-# WARNING: This code is made to work with TEbench
+# WARNING: This code is made to work with another workflow
 ################################################################################
 
 rule fasterq_dump_single:
