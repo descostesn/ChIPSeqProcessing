@@ -1,0 +1,5 @@
+channels:
+  - bioconda/linux-64
+dependencies:
+  - macs2=2.2.9.1=py39hf95cd2a_0
+  
