@@ -159,6 +159,9 @@ paired_trimmed_best = [samplename + "_trimmed_best" for samplename in PAIREDSAMP
 paired_trimmed_k = create_k_names(PAIREDSAMPLES, MULTITHRESHOLD)
 PAIREDBESTMULTI = paired_trimmed_best + paired_trimmed_k
 
+# Information for peak detection
+QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
+
 
 ###############################################################################
 # Rules
