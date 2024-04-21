@@ -73,6 +73,12 @@ def create_k_names(samples, multithreshold):
             result.append(samplename + "_trimmed_k" + k)
     return result
 
+def create_k_namesnext(samples, multithreshold):
+    result = []
+    for samplename in samples:
+        for k in multithreshold:
+            result.append(samplename + "_trimmed_k" + k + "_sorted_nodups")
+    return result
 
 ###############################################################################
 # Reading input table
@@ -173,7 +179,14 @@ b = samplesData_single['sraname'].tolist()
 single_exp_input_idx=[ b.index(x) if x in b else None for x in a ]
 single_input = samplesData_single.iloc[single_exp_input_idx]
 
-paired_exp = samplesData_paired[samplesData_paired['input'] != 'none']
+SINGLEEXPSYNC=single_exp["samples"].tolist()
+singleexpssync_trimbest = [samplename + "_trimmed_best_sorted_nodups" for samplename in SINGLEEXPSYNC]
+singleexpsync_trimmed_k = create_k_namesnext(SINGLEEXPSYNC, MULTITHRESHOLD)
+SINGLEEXPSYNCBESTMULTI = singleexpssync_trimbest + singleexpsync_trimmed_k
+!! single_input
+
+
+!paired_exp = samplesData_paired[samplesData_paired['input'] != 'none']
 ###############################################################################
 # Rules
 ###############################################################################
