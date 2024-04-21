@@ -163,6 +163,10 @@ PAIREDBESTMULTI = paired_trimmed_best + paired_trimmed_k
 QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
 MODELTYPE = ["no_model", "model_based"]
 
+# Building table of corresponding exp/input
+single_exp = samplesData_single[samplesData_single['input'] != 'none']
+paired_exp = samplesData_paired[samplesData_paired['input'] != 'none']
+
 
 ###############################################################################
 # Rules
