@@ -13,7 +13,7 @@ rule macs2_narrow_single:
 no_model
 model_based
 
-0.001, 0.01, 0.02, 0.03, 0.04, 1e-04, 1e-05
+
 
 
 rule macs2_broad_single:
