@@ -191,8 +191,8 @@ QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
 MODELTYPE = ["no_model", "model_based"]
 
 # Building table of corresponding exp/input
-(sync_single_expdf, sync_single_inputdf) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
-(sync_paired_expdf, sync_paired_inputdf) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
+(sync_single_exp, sync_single_input) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
+(sync_paired_exp, sync_paired_input) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
 
 
 ###############################################################################
