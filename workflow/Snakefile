@@ -98,6 +98,8 @@ def syncbestmulti(samplesData, multithres):
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
     return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
 
+
+
 ###############################################################################
 # Reading input table
 ###############################################################################
@@ -176,7 +178,6 @@ VERSION=config["genome"]["version"]
 MULTITHRESHOLD=["10", "50", "100", "150", "200", "250", "300", "350", "400"]
 
 #  Define files names for BAM format grouping the best, k and all names
-
 single_trimmed_best = [samplename + "_trimmed_best" for samplename in SINGLESAMPLES]
 single_trimmed_k = create_k_names(SINGLESAMPLES, MULTITHRESHOLD)
 SINGLEBESTMULTI = single_trimmed_best + single_trimmed_k
@@ -190,8 +191,8 @@ QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
 MODELTYPE = ["no_model", "model_based"]
 
 # Building table of corresponding exp/input
-(sync_single_expdf, sync_single_inputdf) = syncbestmulti(samplesData_single, multithres)
-(sync_paired_expdf, sync_paired_inputdf) = syncbestmulti(samplesData_paired, multithres)  
+(sync_single_expdf, sync_single_inputdf) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
+(sync_paired_expdf, sync_paired_inputdf) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
 
 
 ###############################################################################
