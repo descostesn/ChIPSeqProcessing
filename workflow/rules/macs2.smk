@@ -30,10 +30,10 @@ rule macs2_narrow_single:
     nbseq=`grep "Total Sequences" {input.macs2info} | sed -e "s/Total\sSequences\s//""` 
     sqlength=`grep "Sequence length" {input.macs2info} | sed -e "s/Sequence\slength\s//"`
     thres=`echo "scale=0 ; $nbseq / 7000000" | bc`
-    
+
     """
 !!
- grep "Total Sequences" test.txt | sed -e "p;s/Total\sSequences\s//" | xargs -I{} "scale=2 ; {} / 2" | bc
+
 
 echo "---- Creating nomodel wihtout broad\n"
 macs2 callpeak -t {input} -c $input_file_vector -n $experiment_name --outdir $output_folder_nomodel -f $format -g $genome_size -s $tag_size -q $qvalue --nomodel --extsize $elongation_size --keep-dup $artefact_threshold";
