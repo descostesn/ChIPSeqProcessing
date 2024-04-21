@@ -94,10 +94,8 @@ def syncbestmulti(samplesData, multithres):
     b = samplesData['sraname'].tolist()
     exp_input_idx=[ b.index(x) if x in b else None for x in a ]
     dfinput = samplesData.iloc[exp_input_idx]
-    
     EXPSYNCBESTMULTI = bestmultibuild(dfsync, multithres)
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
-
     return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
 
 ###############################################################################
