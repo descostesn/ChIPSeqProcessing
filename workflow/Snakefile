@@ -80,6 +80,26 @@ def create_k_namesnext(samples, multithreshold):
             result.append(samplename + "_trimmed_k" + k + "_sorted_nodups")
     return result
 
+def bestmultibuild(dfsync, multithres):
+    SAMPSYNC = dfsync["samples"].tolist()
+    sampsync_trimbest = [samplename + "_trimmed_best_sorted_nodups" for samplename in SAMPSYNC]
+    sampsync_trimmed_k = create_k_namesnext(SAMPSYNC, multithres)
+    SAMPSYNCBESTMULTI = sampsync_trimbest + sampsync_trimmed_k
+    return SAMPSYNCBESTMULTI
+
+def syncbestmulti(samplesData, multithres):
+    dfexp = samplesData[samplesData['input'] != 'none']
+    dfexp_input_ref = [exp.split("-")[0] for exp in dfexp['input']]
+    a = dfexp_input_ref
+    b = samplesData['sraname'].tolist()
+    exp_input_idx=[ b.index(x) if x in b else None for x in a ]
+    dfinput = samplesData.iloc[exp_input_idx]
+    
+    EXPSYNCBESTMULTI = bestmultibuild(dfsync, multithres)
+    INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
+
+    return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
+
 ###############################################################################
 # Reading input table
 ###############################################################################
@@ -172,26 +192,6 @@ QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
 MODELTYPE = ["no_model", "model_based"]
 
 # Building table of corresponding exp/input
-def bestmultibuild(dfsync, multithres):
-    SAMPSYNC = dfsync["samples"].tolist()
-    sampsync_trimbest = [samplename + "_trimmed_best_sorted_nodups" for samplename in SAMPSYNC]
-    sampsync_trimmed_k = create_k_namesnext(SAMPSYNC, multithres)
-    SAMPSYNCBESTMULTI = sampsync_trimbest + sampsync_trimmed_k
-    return SAMPSYNCBESTMULTI
-
-def syncbestmulti(samplesData, multithres):
-    dfexp = samplesData[samplesData['input'] != 'none']
-    dfexp_input_ref = [exp.split("-")[0] for exp in dfexp['input']]
-    a = dfexp_input_ref
-    b = samplesData['sraname'].tolist()
-    exp_input_idx=[ b.index(x) if x in b else None for x in a ]
-    dfinput = samplesData.iloc[exp_input_idx]
-    
-    EXPSYNCBESTMULTI = bestmultibuild(dfsync, multithres)
-    INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
-
-    return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
-
 (sync_single_expdf, sync_single_inputdf) = syncbestmulti(samplesData_single, multithres)
 (sync_paired_expdf, sync_paired_inputdf) = syncbestmulti(samplesData_paired, multithres)  
 
