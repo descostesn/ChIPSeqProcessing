@@ -27,7 +27,7 @@ rule macs2_narrow_single:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singlebestmulti}_peaks.narrowPeak"
   shell:
     """
-    nbseq=`grep "Total Sequences"  
+    nbseq=`grep "Total Sequences" {input.macs2info}` 
     """
 !!
 echo "---- Creating nomodel wihtout broad\n"
