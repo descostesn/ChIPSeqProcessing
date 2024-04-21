@@ -10,8 +10,6 @@ rule macs2_narrow_single:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singlebestmulti}_peaks.narrowPeak"
 
 
-no_model
-model_based
 
 
 
