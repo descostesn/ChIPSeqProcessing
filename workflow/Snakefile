@@ -190,6 +190,8 @@ def syncbestmulti(samplesData, multithres):
     EXPSYNCBESTMULTI = bestmultibuild(dfsync, multithres)
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
 
+    return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
+
 !! single_input
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
