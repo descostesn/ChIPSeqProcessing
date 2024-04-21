@@ -13,6 +13,8 @@
 
 import pandas
 import os
+from os.path import basename, splitext, commonprefix
+
 
 ###############################################################################
 # Config Variables
@@ -165,9 +167,16 @@ MODELTYPE = ["no_model", "model_based"]
 
 # Building table of corresponding exp/input
 single_exp = samplesData_single[samplesData_single['input'] != 'none']
+single_exp_input_ref=[exp.split("-")[0] for exp in single_exp['input']]
+
+a = single_exp_input_ref
+b = samplesData_single['sraname'].tolist()
+[ b.index(x) if x in b else None for x in a ]
+
+single_exp_input=[samplesData_single['sraname'] == ]
+
+
 paired_exp = samplesData_paired[samplesData_paired['input'] != 'none']
-
-
 ###############################################################################
 # Rules
 ###############################################################################
