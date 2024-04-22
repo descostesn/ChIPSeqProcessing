@@ -89,6 +89,7 @@ def bestmultibuild(dfsync, multithres):
 
 def syncbestmulti(samplesData, multithres):
     dfexp = samplesData[samplesData['input'] != 'none']
+    SAMPLENAMES = dfexp['samples'].tolist()
     dfexp_input_ref = [exp.split("-")[0] for exp in dfexp['input']]
     a = dfexp_input_ref
     b = samplesData['sraname'].tolist()
@@ -96,7 +97,7 @@ def syncbestmulti(samplesData, multithres):
     dfinput = samplesData.iloc[exp_input_idx]
     EXPSYNCBESTMULTI = bestmultibuild(dfexp, multithres)
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
-    return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI
+    return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI,SAMPLENAMES
 
 
 
@@ -191,8 +192,8 @@ QVALTHRES = ["0.001", "0.01", "0.02", "0.03", "0.04", "1e-04", "1e-05"]
 MODELTYPE = ["no_model", "model_based"]
 
 # Building table of corresponding exp/input
-(sync_single_exp, sync_single_input) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
-(sync_paired_exp, sync_paired_input) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
+(sync_single_exp, sync_single_input, samplenames_single) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
+(sync_paired_exp, sync_paired_input, samplesname_paired) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
 
 
 ###############################################################################
