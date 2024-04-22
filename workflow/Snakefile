@@ -98,6 +98,8 @@ def syncbestmulti(samplesData, multithres):
     EXPSYNCBESTMULTI = bestmultibuild(dfexp, multithres)
     SAMPLENAMES = [re.sub(r'_trimmed_.+_sorted_nodups', '', sample) for sample in EXPSYNCBESTMULTI]
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
+    if EXPSYNCBESTMULTI.len() != SAMPLENAMES.len() OR EXPSYNCBESTMULTI.len() != INPUTSYNCBESTMULTI.len():
+      raise KeyError("The lists do not have the same length in syncbestmulti")
     return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI,SAMPLENAMES
 
 
