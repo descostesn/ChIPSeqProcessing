@@ -13,6 +13,7 @@
 
 import pandas
 import os
+import re
 from os.path import basename, splitext, commonprefix
 
 
@@ -89,13 +90,13 @@ def bestmultibuild(dfsync, multithres):
 
 def syncbestmulti(samplesData, multithres):
     dfexp = samplesData[samplesData['input'] != 'none']
-    SAMPLENAMES = dfexp['samples'].tolist()
     dfexp_input_ref = [exp.split("-")[0] for exp in dfexp['input']]
     a = dfexp_input_ref
     b = samplesData['sraname'].tolist()
     exp_input_idx=[ b.index(x) if x in b else None for x in a ]
     dfinput = samplesData.iloc[exp_input_idx]
     EXPSYNCBESTMULTI = bestmultibuild(dfexp, multithres)
+    SAMPLENAMES = [re.sub(r'_trimmed_.+_sorted_nodups', '', sample) for sample in EXPSYNCBESTMULTI]
     INPUTSYNCBESTMULTI = bestmultibuild(dfinput, multithres)
     return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI,SAMPLENAMES
 
