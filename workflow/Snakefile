@@ -198,6 +198,11 @@ MODELTYPE = ["no_model", "model_based"]
 (sync_single_exp, sync_single_input, samplenames_single) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
 (sync_paired_exp, sync_paired_input, samplesname_paired) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
 
+!!
+!! Build a variable with the output name of macs2
+!! {singleexpsync}_control{singleinputsync}_info{samplenames}
+
+
 
 ###############################################################################
 # Rules
