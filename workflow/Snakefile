@@ -198,9 +198,12 @@ MODELTYPE = ["no_model", "model_based"]
 (sync_single_exp, sync_single_input, samplenames_single) = syncbestmulti(samplesData_single, MULTITHRESHOLD)
 (sync_paired_exp, sync_paired_input, samplesname_paired) = syncbestmulti(samplesData_paired, MULTITHRESHOLD)  
 
-!!
-!! Build a variable with the output name of macs2
-!! {singleexpsync}_control{singleinputsync}_info{samplenames}
+def build_output_names_peakdetection(expsync, inputsync, sampleinfo):
+  peakfilewildcard = [expname + "_control" + inputname + "_info" + samp for expname in expsync for inputname in inputsync for samp in sampleinfo]
+  return peakfilewildcard
+
+SAMPLECONTROLINFOREFSINGLE = build_output_names_peakdetection(sync_single_exp, sync_single_input, samplenames_single)
+SAMPLECONTROLINFOREFPAIRED = build_output_names_peakdetection(sync_paired_exp, sync_paired_input, samplesname_paired)
 
 
 
