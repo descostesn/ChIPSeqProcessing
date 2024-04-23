@@ -24,10 +24,15 @@ rule macs2_narrow_single:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
     macs2info = "../results/qc/info_macs2/single/{samplenames}.txt"
+    !!!!!!!!!!!!!!!!!!!!
+!!! ADD THE RETRIEVAL OF THE ELONGATION SIZE FOR MACS. CHECK IF singleexpsync IS EQUIVALENT TO singlebestmulti FOR sorted_nodups
+!!!!!!!!!!!!!!!!!!!!
+
   output:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.narrowPeak"
   threads: 1
   conda: "../envs/macs2.yaml"
+  !! benchmark:
   params:
     genome_size = config["genome"]["size"]
   shell:
@@ -44,11 +49,16 @@ rule macs2_broad_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
-    macs2info = "../results/qc/info_macs2/single/{samplenames}.txt"
+    macs2info = "../results/qc/info_macs2/single/{samplenames}.txt",
+    !!!!!!!!!!!!!!!!!!!!
+!!! ADD THE RETRIEVAL OF THE ELONGATION SIZE FOR MACS. CHECK IF singleexpsync IS EQUIVALENT TO singlebestmulti FOR sorted_nodups
+!!!!!!!!!!!!!!!!!!!!
+
   output:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/no_model_broad/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.broadPeak"
   threads: 1
   conda: "../envs/macs2.yaml"
+  !! benchmark:
   params:
     genome_size = config["genome"]["size"]
   shell:
