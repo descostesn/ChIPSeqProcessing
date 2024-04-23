@@ -355,7 +355,10 @@ rule all:
     expand("../results/bigwig/single/{genome}/{singlebestmulti}_norm.bw",
         genome = GENOMEID, singlebestmulti = SINGLEBESTMULTI),
     expand("../results/bigwig/paired/{genome}/{pairedbestmulti}_norm.bw",
-        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI)
+        genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
+    expand("../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{sample_control}_peaks.narrowPeak",
+        genome = GENOMEID, qvalthres = QVALTHRES, modeltype = MODELTYPE, sample_control = SAMPLECONTROLINFOREFSINGLE),
+    
 
 
 include: "rules/download.smk"
