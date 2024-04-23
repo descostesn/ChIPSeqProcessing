@@ -25,7 +25,7 @@ rule macs2_narrow_single:
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
     macs2info = "../results/qc/info_macs2/single/{samplenames}.txt"
   output:
-    "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singleexpsync}_control{singleinputsync}_info{samplenames}_peaks.narrowPeak"
+    "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.narrowPeak"
   shell:
     """
     nbseq=`grep "Total Sequences" {input.macs2info} | sed -e "s/Total\sSequences\s//""` 
