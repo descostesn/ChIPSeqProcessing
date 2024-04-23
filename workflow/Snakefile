@@ -358,6 +358,8 @@ rule all:
         genome = GENOMEID, pairedbestmulti = PAIREDBESTMULTI),
     expand("../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{sample_control}_peaks.narrowPeak",
         genome = GENOMEID, qvalthres = QVALTHRES, modeltype = MODELTYPE, sample_control = SAMPLECONTROLINFOREFSINGLE),
+    expand("../results/peak_detection/single/macs2/{genome}/{qvalthres}/no_model_broad/{sample_control}_peaks.broadPeak",
+        genome = GENOMEID, qvalthres = QVALTHRES, sample_control = SAMPLECONTROLINFOREFSINGLE)
     
 
 
@@ -374,3 +376,4 @@ include: "rules/duplicates.smk"
 include: "rules/index_bigwig.smk"
 include: "rules/fragmentsize.smk"
 include: "rules/bigwig.smk"
+include: "rules/macs2.smk"
