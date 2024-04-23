@@ -103,7 +103,7 @@ def syncbestmulti(samplesData, multithres):
     return EXPSYNCBESTMULTI,INPUTSYNCBESTMULTI,SAMPLENAMES
 
 def build_output_names_peakdetection(expsync, inputsync, sampleinfo):
-  peakfilewildcard = [expname + "_control" + inputname + "_info" + samp for expname in expsync for inputname in inputsync for samp in sampleinfo]
+  peakfilewildcard = [expsync[i] + "_control" + inputsync[i] + "_info" + sampleinfo[i] for i in range(0,len(expsync))]
   return peakfilewildcard
 
 
