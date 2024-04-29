@@ -35,8 +35,6 @@ def retrieve_elongation(wildcards):
     return elongval
 
 
-
-
 rule macs2_narrow_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
