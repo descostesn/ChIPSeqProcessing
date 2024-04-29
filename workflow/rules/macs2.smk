@@ -71,5 +71,6 @@ rule macs2_broad_single:
     sqlength=`grep "Sequence length" {input.macs2info} | sed -e "s/Sequence\slength\s//"`
     thres=`echo "scale=0 ; $nbseq / 7000000" | bc`
     outfold=`dirname {output}`
-    macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} -s $sqlength --nomodel --extsize 150 --keep-dup $thres --broad --broad-cutoff {wildcards.qvalthres}
+    macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} \
+    -s $sqlength --nomodel --extsize {params.elongval} --keep-dup $thres --broad --broad-cutoff {wildcards.qvalthres}
     """
