@@ -19,6 +19,17 @@ rule retrieve_singleinfo:
     rm -r $foldname
     """
 
+def retrieve_elongation(wildcards):
+    FilePath = "../results/qc/bowtie2_saturation_percentmultireads/wildcards.genome/single/wildcards.samplenames.txt"
+    SampleName = wildcards.singleexpsync
+    with open(FilePath, 'r') as f:
+      mat = [[element.strip() for element in line.split('\t')] for line in f]
+    
+    # Retrieve alignment threshold from samplenames
+    bowtie2thres = SampleName.split("_trimmed_")[1].split("_sorted")[0]
+
+
+
 rule macs2_narrow_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
