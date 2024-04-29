@@ -28,6 +28,13 @@ def retrieve_elongation(wildcards):
     # Retrieve alignment threshold from samplenames
     bowtie2thres = SampleName.split("_trimmed_")[1].split("_sorted")[0]
 
+    # Retrieve elongation value
+    idx = mat[0].index(bowtie2thres)
+    elongval = float(mat[1][idx])
+
+    return elongval
+
+
 
 
 rule macs2_narrow_single:
