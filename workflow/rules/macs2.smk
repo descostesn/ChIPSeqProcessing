@@ -19,22 +19,6 @@ rule retrieve_singleinfo:
     rm -r $foldname
     """
 
-def retrieve_elongation(wildcards):
-    FilePath = "../results/qc/bowtie2_saturation_percentmultireads/wildcards.genome/single/wildcards.samplenames.txt"
-    SampleName = wildcards.singleexpsync
-    with open(FilePath, 'r') as f:
-      mat = [[element.strip() for element in line.split('\t')] for line in f]
-    
-    # Retrieve alignment threshold from samplenames
-    bowtie2thres = SampleName.split("_trimmed_")[1].split("_sorted")[0]
-
-    # Retrieve elongation value
-    idx = mat[0].index(bowtie2thres)
-    elongval = float(mat[1][idx])
-
-    return elongval
-
-
 rule macs2_narrow_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
@@ -66,7 +50,6 @@ rule macs2_narrow_single:
     macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} \
     -s $sqlength -q {wildcards.qvalthres} --nomodel --extsize {params.elongval} --keep-dup $thres
     """
-
 
 rule macs2_broad_single:
   input:
