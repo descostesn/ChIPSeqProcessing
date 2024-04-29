@@ -23,7 +23,8 @@ rule macs2_narrow_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
-    macs2info = "../results/qc/info_macs2/single/{samplenames}.txt"
+    macs2info = "../results/qc/info_macs2/single/{samplenames}.txt",
+    elongation = "../results/qc/bowtie2_saturation_percentmultireads/{genome}/single/{samplenames}.txt"
     !!!!!!!!!!!!!!!!!!!!
 !!! ADD THE RETRIEVAL OF THE ELONGATION SIZE FOR MACS. CHECK IF singleexpsync IS EQUIVALENT TO singlebestmulti FOR sorted_nodups
 !!!!!!!!!!!!!!!!!!!!
@@ -32,18 +33,28 @@ rule macs2_narrow_single:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.narrowPeak"
   threads: 1
   conda: "../envs/macs2.yaml"
-  !! benchmark:
+  benchmark: "benchmark/macs2_narrow_single/{genome}/single/{samplenames}.tsv"
   params:
     genome_size = config["genome"]["size"]
   shell:
     """
+    ## Retrieve in the file obtained with the above rule 'retrieve_singleinfo' the number and length of reads
     nbseq=`grep "Total Sequences" {input.macs2info} | sed -e "s/Total\sSequences\s//""` 
     sqlength=`grep "Sequence length" {input.macs2info} | sed -e "s/Sequence\slength\s//"`
+
+    ## Compute the threshold for duplicates which increases of 1 every 7 million reads
     thres=`echo "scale=0 ; $nbseq / 7000000" | bc`
+
+    ## Define the output folder and the threshold used for bowtie2 alignment
     outfold=`dirname {output}`
+    thresalign=`ls *.txt | awk -F'_trimmed_' '{print $2}' | awk -F'_sorted' '{print $1}'`
+
     echo "---- Creating nomodel wihtout broad\n"
     macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} -s $sqlength -q {wildcards.qvalthres} --nomodel --extsize 150 --keep-dup $thres
     """
+
+
+
 
 rule macs2_broad_single:
   input:
