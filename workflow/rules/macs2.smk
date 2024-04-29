@@ -43,17 +43,14 @@ rule macs2_narrow_single:
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
     macs2info = "../results/qc/info_macs2/single/{samplenames}.txt",
     elongation = "../results/qc/bowtie2_saturation_percentmultireads/{genome}/single/{samplenames}.txt"
-    !!!!!!!!!!!!!!!!!!!!
-!!! ADD THE RETRIEVAL OF THE ELONGATION SIZE FOR MACS. CHECK IF singleexpsync IS EQUIVALENT TO singlebestmulti FOR sorted_nodups
-!!!!!!!!!!!!!!!!!!!!
-
   output:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/{modeltype}/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.narrowPeak"
   threads: 1
   conda: "../envs/macs2.yaml"
   benchmark: "benchmark/macs2_narrow_single/{genome}/single/{samplenames}.tsv"
   params:
-    genome_size = config["genome"]["size"]
+    genome_size = config["genome"]["size"],
+    elongval = retrieve_elongation
   shell:
     """
     ## Retrieve in the file obtained with the above rule 'retrieve_singleinfo' the number and length of reads
@@ -68,7 +65,8 @@ rule macs2_narrow_single:
     thresalign=`ls *.txt | awk -F'_trimmed_' '{print $2}' | awk -F'_sorted' '{print $1}'`
 
     echo "---- Creating nomodel wihtout broad\n"
-    macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} -s $sqlength -q {wildcards.qvalthres} --nomodel --extsize 150 --keep-dup $thres
+    macs2 callpeak -t {input.chipexp} -c {input.controlexp} -n {wildcards.singleexpsync} --outdir $outfold -f 'BAM' -g {params.genome_size} \
+    -s $sqlength -q {wildcards.qvalthres} --nomodel --extsize {params.elongval} --keep-dup $thres
     """
 
 
