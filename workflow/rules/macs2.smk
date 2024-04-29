@@ -68,24 +68,20 @@ rule macs2_narrow_single:
     """
 
 
-
-
 rule macs2_broad_single:
   input:
     chipexp = "../results/bam/single/bowtie2_results/{genome}/{singleexpsync}.bam",
     controlexp = "../results/bam/single/bowtie2_results/{genome}/{singleinputsync}.bam",
     macs2info = "../results/qc/info_macs2/single/{samplenames}.txt",
-    !!!!!!!!!!!!!!!!!!!!
-!!! ADD THE RETRIEVAL OF THE ELONGATION SIZE FOR MACS. CHECK IF singleexpsync IS EQUIVALENT TO singlebestmulti FOR sorted_nodups
-!!!!!!!!!!!!!!!!!!!!
-
+    elongation = "../results/qc/bowtie2_saturation_percentmultireads/{genome}/single/{samplenames}.txt"
   output:
     "../results/peak_detection/single/macs2/{genome}/{qvalthres}/no_model_broad/{singleexpsync}_control_{singleinputsync}_info_{samplenames}_peaks.broadPeak"
   threads: 1
   conda: "../envs/macs2.yaml"
-  !! benchmark:
+  benchmark: "benchmark/macs2_broad_single/{genome}/single/{samplenames}.tsv"
   params:
-    genome_size = config["genome"]["size"]
+    genome_size = config["genome"]["size"],
+    elongval = retrieve_elongation
   shell:
     """
     nbseq=`grep "Total Sequences" {input.macs2info} | sed -e "s/Total\sSequences\s//""` 
