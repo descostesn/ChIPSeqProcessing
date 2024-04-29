@@ -106,6 +106,22 @@ def build_output_names_peakdetection(expsync, inputsync, sampleinfo):
   peakfilewildcard = [expsync[i] + "_control_" + inputsync[i] + "_info_" + sampleinfo[i] for i in range(0,len(expsync))]
   return peakfilewildcard
 
+def retrieve_elongation(wildcards):
+    FilePath = "../results/qc/bowtie2_saturation_percentmultireads/wildcards.genome/single/wildcards.samplenames.txt"
+    SampleName = wildcards.singleexpsync
+    with open(FilePath, 'r') as f:
+      mat = [[element.strip() for element in line.split('\t')] for line in f]
+    
+    # Retrieve alignment threshold from samplenames
+    bowtie2thres = SampleName.split("_trimmed_")[1].split("_sorted")[0]
+
+    # Retrieve elongation value
+    idx = mat[0].index(bowtie2thres)
+    elongval = float(mat[1][idx])
+
+    return elongval
+
+
 
 ###############################################################################
 # Reading input table
